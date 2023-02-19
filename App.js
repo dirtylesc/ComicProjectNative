@@ -24,7 +24,6 @@ const Tab = createBottomTabNavigator();
 
 const ViewContainer = styled(View)`
   flex: 1;
-  background-color: #f9f9f9;
 `;
 
 function App() {
