@@ -1,0 +1,17 @@
+{
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[xml]": {
+      "editor.defaultFormatter": "redhat.vscode-xml"
+    },
+    "files.associations": {
+      "ostream": "cpp",
+      "iomanip": "cpp",
+      "algorithm": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
+  }
+  
