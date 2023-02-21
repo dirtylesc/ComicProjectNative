@@ -1,9 +1,13 @@
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable react/no-unstable-nested-components */
 import React, {useCallback} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 import {useFonts} from 'expo-font';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
+import {ExploreScreen, LibraryScreen, ProfileScreen} from './src/Screens';
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
   faChessKing,
@@ -11,20 +15,11 @@ import {
   faChartBar,
   faUser,
 } from '@fortawesome/free-regular-svg-icons';
-import styled from 'styled-components';
 
-import {
-  ExploreScreen,
-  LibraryScreen,
-  ProfileScreen,
-  FeaturedScreen,
-} from './src/Screens';
+import {TopBarNavigator} from './src/Navigators';
+import FeaturedHeader from './src/Components/FeaturedHeader';
 
 const Tab = createBottomTabNavigator();
-
-const ViewContainer = styled(View)`
-  flex: 1;
-`;
 
 function App() {
   const [fontsLoaded] = useFonts({
@@ -42,46 +37,56 @@ function App() {
   }
 
   return (
-    <ViewContainer>
-      <NavigationContainer onLayout={onLayoutRootView} st>
-        <Tab.Navigator
-          initialRouteName="Featured"
-          screenOptions={({route}) => ({
-            headerShown: false,
-            // eslint-disable-next-line react/no-unstable-nested-components
-            tabBarIcon: ({focused}) => {
-              let iconName;
-              if (route.name === 'Library') {
-                iconName = faBookmark;
-              } else if (route.name === 'Featured') {
-                iconName = faChessKing;
-              } else if (route.name === 'Explore') {
-                iconName = faChartBar;
-              } else if (route.name === 'Profile') {
-                iconName = faUser;
-              }
-              return (
-                <FontAwesomeIcon
-                  icon={iconName}
-                  size={20}
-                  color={focused ? 'black' : '#666666'}
-                  swapOpacity
-                />
-              );
-            },
-            tabBarActiveTintColor: 'black',
-            tabBarLabelStyle: styles.tabBar,
-            tabBarStyle: {
-              paddingTop: 5,
-            },
-          })}>
-          <Tab.Screen name="Library" component={LibraryScreen} />
-          <Tab.Screen name="Featured" component={FeaturedScreen} />
-          <Tab.Screen name="Explore" component={ExploreScreen} />
-          <Tab.Screen name="Profile" component={ProfileScreen} />
-        </Tab.Navigator>
+    <SafeAreaProvider>
+      <NavigationContainer onLayout={onLayoutRootView}>
+        <SafeAreaView style={{flex: 1}}>
+          <Tab.Navigator
+            initialRouteName="Featured"
+            sceneContainerStyle={{
+              backgroundColor: '#F1F4F9',
+            }}
+            screenOptions={({route}) => ({
+              // eslint-disable-next-line react/no-unstable-nested-components
+              tabBarIcon: ({focused}) => {
+                let iconName;
+                if (route.name === 'Library') {
+                  iconName = faBookmark;
+                } else if (route.name === 'Featured') {
+                  iconName = faChessKing;
+                } else if (route.name === 'Explore') {
+                  iconName = faChartBar;
+                } else if (route.name === 'Profile') {
+                  iconName = faUser;
+                }
+                return (
+                  <FontAwesomeIcon
+                    icon={iconName}
+                    size={20}
+                    color={focused ? 'black' : '#666666'}
+                    swapOpacity
+                  />
+                );
+              },
+              tabBarActiveTintColor: 'black',
+              tabBarLabelStyle: styles.tabBar,
+              tabBarStyle: {
+                paddingTop: 5,
+              },
+            })}>
+            <Tab.Screen name="Library" component={LibraryScreen} />
+            <Tab.Screen
+              name="Featured"
+              component={TopBarNavigator}
+              options={{
+                header: () => <FeaturedHeader />,
+              }}
+            />
+            <Tab.Screen name="Explore" component={ExploreScreen} />
+            <Tab.Screen name="Profile" component={ProfileScreen} />
+          </Tab.Navigator>
+        </SafeAreaView>
       </NavigationContainer>
-    </ViewContainer>
+    </SafeAreaProvider>
   );
 }
 

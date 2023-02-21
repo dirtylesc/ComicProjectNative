@@ -1,4 +1,7 @@
 {
   "name": "ComicProjectNative",
-  "displayName": "ComicProjectNative"
+  "displayName": "ComicProjectNative",
+  "expo": {
+    "orientation": "portrait"
+  }
 }

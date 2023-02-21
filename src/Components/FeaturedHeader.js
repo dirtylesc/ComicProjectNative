@@ -2,24 +2,15 @@
 /* eslint-disable react/react-in-jsx-scope */
 import styled from 'styled-components';
 
-import {
-  StyleSheet,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
-import {useRef, useState} from 'react';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {useRef} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faGlobe, faHeart} from '@fortawesome/free-solid-svg-icons';
 
 import Search from '../Components/Search';
 import BottomPopup from '../Components/BottomPopup';
 import ItemBottomPopup from '../Components/ItemBottomPopup';
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import NovelScreen from './NovelScreen';
-import ComicScreen from './ComicScreen';
-import NewNovelScreen from './NewNovelScreen';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const Heading = styled(View)`
   flex: 1;
@@ -27,10 +18,12 @@ const Heading = styled(View)`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 60px 40px 20px 15px;
+  padding: 15px 30px 0 15px;
 `;
 
 function FeaturedScreen() {
+  const insets = useSafeAreaInsets();
+
   const popupRef = useRef();
 
   const openPopup = () => {
@@ -38,9 +31,9 @@ function FeaturedScreen() {
   };
 
   return (
-    <View style={styles.centeredView}>
+    <SafeAreaView style={{marginBottom: insets.bottom}}>
       <Heading>
-        <Search width="95%" placeholder="Search for stories" />
+        <Search width="100%" placeholder="Search for stories" />
         <TouchableOpacity onPress={openPopup} style={styles.languageTouch}>
           <FontAwesomeIcon icon={faGlobe} size={20} />
         </TouchableOpacity>
@@ -57,13 +50,12 @@ function FeaturedScreen() {
           />
         </BottomPopup>
       </Heading>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  centeredView: {},
-  languageTouch: {flex: 1, marginLeft: '5%'},
+  languageTouch: {flex: 1, alignItems: 'center'},
 });
 
 export default FeaturedScreen;
