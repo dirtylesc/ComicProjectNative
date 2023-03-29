@@ -1,39 +1,28 @@
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable react/no-unstable-nested-components */
 import React, {useCallback} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 
-import {useFonts} from 'expo-font';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {
-  faChessKing,
-  faBookmark,
-  faChartBar,
-  faUser,
-} from '@fortawesome/free-regular-svg-icons';
-import styled from 'styled-components';
+import {createStackNavigator} from '@react-navigation/stack';
+import {useFonts} from 'expo-font';
 
-import {
-  ExploreScreen,
-  LibraryScreen,
-  ProfileScreen,
-  FeaturedScreen,
-} from './src/Screens';
+import {LoginScreen, RegisterScreen} from 'Screens/Auth';
+import MainScreen from 'Screens/MainScreen';
+import {colors} from 'res/colors';
+import AuthScreen from 'Screens/Auth/AuthScreen';
+import {SettingScreen} from 'Screens/Profile';
 
-const Tab = createBottomTabNavigator();
-
-const ViewContainer = styled(View)`
-  flex: 1;
-`;
+const Stack = createStackNavigator();
 
 function App() {
   const [fontsLoaded] = useFonts({
-    'NunitoSans-Regular': require('./src/Assets/Fonts/NunitoSans-Regular.ttf'),
+    'NunitoSans-Regular': require('Assets/Fonts/NunitoSans-Regular.ttf'),
   });
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
-      await Tab.hideAsync();
+      await Stack.hideAsync();
     }
   }, [fontsLoaded]);
 
@@ -42,56 +31,52 @@ function App() {
   }
 
   return (
-    <ViewContainer>
-      <NavigationContainer onLayout={onLayoutRootView} st>
-        <Tab.Navigator
-          initialRouteName="Featured"
-          screenOptions={({route}) => ({
-            headerShown: false,
-            // eslint-disable-next-line react/no-unstable-nested-components
-            tabBarIcon: ({focused}) => {
-              let iconName;
-              if (route.name === 'Library') {
-                iconName = faBookmark;
-              } else if (route.name === 'Featured') {
-                iconName = faChessKing;
-              } else if (route.name === 'Explore') {
-                iconName = faChartBar;
-              } else if (route.name === 'Profile') {
-                iconName = faUser;
-              }
-              return (
-                <FontAwesomeIcon
-                  icon={iconName}
-                  size={20}
-                  color={focused ? 'black' : '#666666'}
-                  swapOpacity
-                />
-              );
-            },
-            tabBarActiveTintColor: 'black',
-            tabBarLabelStyle: styles.tabBar,
-            tabBarStyle: {
-              paddingTop: 5,
-            },
-          })}>
-          <Tab.Screen name="Library" component={LibraryScreen} />
-          <Tab.Screen name="Featured" component={FeaturedScreen} />
-          <Tab.Screen name="Explore" component={ExploreScreen} />
-          <Tab.Screen name="Profile" component={ProfileScreen} />
-        </Tab.Navigator>
-      </NavigationContainer>
-    </ViewContainer>
+    <NavigationContainer onLayout={onLayoutRootView}>
+      <Stack.Navigator
+        initialRouteName="Profile"
+        screenOptions={() => ({
+          headerShown: false,
+          cardStyle: styles.cardLayout,
+        })}>
+        <Stack.Group>
+          <Stack.Screen name="Main" component={MainScreen} />
+        </Stack.Group>
+        <Stack.Group>
+          <Stack.Screen
+            name="Auth"
+            component={AuthScreen}
+            options={{presentation: 'modal'}}
+          />
+          <Stack.Screen name="Register" component={RegisterScreen} />
+          <Stack.Screen name="Login" component={LoginScreen} />
+        </Stack.Group>
+        <Stack.Group>
+          <Stack.Screen
+            name="Setting"
+            component={SettingScreen}
+            options={{
+              headerShown: true,
+              title: 'Settings',
+              headerTitleAlign: 'center',
+              headerStyle: {
+                borderBottomWidth: 0.5,
+              },
+            }}
+          />
+        </Stack.Group>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  tabBar: {
+  cardLayout: {
     paddingBottom: 2,
     letterSpacing: 0.5,
     fontSize: 10,
     fontFamily: 'NunitoSans-Regular',
     fontWeight: 400,
+    backgroundColor: colors.bg_primary,
   },
 });
 
