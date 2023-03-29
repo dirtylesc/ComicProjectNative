@@ -4,16 +4,27 @@ import React, {useCallback} from 'react';
 import {StyleSheet} from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import {useFonts} from 'expo-font';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {
+  faChessKing,
+  faBookmark,
+  faChartBar,
+  faUser,
+} from '@fortawesome/free-regular-svg-icons';
+import styled from 'styled-components';
 
-import {LoginScreen, RegisterScreen} from 'Screens/Auth';
-import MainScreen from 'Screens/MainScreen';
-import {colors} from 'res/colors';
-import AuthScreen from 'Screens/Auth/AuthScreen';
-import {SettingScreen} from 'Screens/Profile';
+import {
+  ExploreScreen,
+  LibraryScreen,
+  ProfileScreen,
+  FeaturedScreen,
+} from './src/Screens';
 
-const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+
+const ViewContainer = styled(View)`
+  flex: 1;
+`;
 
 function App() {
   const [fontsLoaded] = useFonts({
@@ -31,41 +42,46 @@ function App() {
   }
 
   return (
-    <NavigationContainer onLayout={onLayoutRootView}>
-      <Stack.Navigator
-        initialRouteName="Profile"
-        screenOptions={() => ({
-          headerShown: false,
-          cardStyle: styles.cardLayout,
-        })}>
-        <Stack.Group>
-          <Stack.Screen name="Main" component={MainScreen} />
-        </Stack.Group>
-        <Stack.Group>
-          <Stack.Screen
-            name="Auth"
-            component={AuthScreen}
-            options={{presentation: 'modal'}}
-          />
-          <Stack.Screen name="Register" component={RegisterScreen} />
-          <Stack.Screen name="Login" component={LoginScreen} />
-        </Stack.Group>
-        <Stack.Group>
-          <Stack.Screen
-            name="Setting"
-            component={SettingScreen}
-            options={{
-              headerShown: true,
-              title: 'Settings',
-              headerTitleAlign: 'center',
-              headerStyle: {
-                borderBottomWidth: 0.5,
-              },
-            }}
-          />
-        </Stack.Group>
-      </Stack.Navigator>
-    </NavigationContainer>
+    <ViewContainer>
+      <NavigationContainer onLayout={onLayoutRootView} st>
+        <Tab.Navigator
+          initialRouteName="Featured"
+          screenOptions={({route}) => ({
+            headerShown: false,
+            // eslint-disable-next-line react/no-unstable-nested-components
+            tabBarIcon: ({focused}) => {
+              let iconName;
+              if (route.name === 'Library') {
+                iconName = faBookmark;
+              } else if (route.name === 'Featured') {
+                iconName = faChessKing;
+              } else if (route.name === 'Explore') {
+                iconName = faChartBar;
+              } else if (route.name === 'Profile') {
+                iconName = faUser;
+              }
+              return (
+                <FontAwesomeIcon
+                  icon={iconName}
+                  size={20}
+                  color={focused ? 'black' : '#666666'}
+                  swapOpacity
+                />
+              );
+            },
+            tabBarActiveTintColor: 'black',
+            tabBarLabelStyle: styles.tabBar,
+            tabBarStyle: {
+              paddingTop: 5,
+            },
+          })}>
+          <Tab.Screen name="Library" component={LibraryScreen} />
+          <Tab.Screen name="Featured" component={FeaturedScreen} />
+          <Tab.Screen name="Explore" component={ExploreScreen} />
+          <Tab.Screen name="Profile" component={ProfileScreen} />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </ViewContainer>
   );
 }
 
