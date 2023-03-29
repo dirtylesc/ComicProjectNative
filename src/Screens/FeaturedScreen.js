@@ -1,69 +1,64 @@
-/* eslint-disable react/self-closing-comp */
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/react-in-jsx-scope */
-import styled from 'styled-components';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {StyleSheet} from 'react-native';
 
-import {
-  StyleSheet,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
-import {useRef, useState} from 'react';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faGlobe, faHeart} from '@fortawesome/free-solid-svg-icons';
+import {NovelScreen, NewNovelScreen, ComicScreen} from 'Screens/Featured';
 
-import Search from '../Components/Search';
-import BottomPopup from '../Components/BottomPopup';
-import ItemBottomPopup from '../Components/ItemBottomPopup';
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import NovelScreen from './NovelScreen';
-import ComicScreen from './ComicScreen';
-import NewNovelScreen from './NewNovelScreen';
+const Tab = createMaterialTopTabNavigator();
 
-const Heading = styled(View)`
-  flex: 1;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  padding: 60px 40px 20px 15px;
-`;
-
-function FeaturedScreen() {
-  const popupRef = useRef();
-
-  const openPopup = () => {
-    popupRef.current.show();
-  };
-
+function FeaturedScreen({navigation}) {
   return (
-    <View style={styles.centeredView}>
-      <Heading>
-        <Search width="95%" placeholder="Search for stories" />
-        <TouchableOpacity onPress={openPopup} style={styles.languageTouch}>
-          <FontAwesomeIcon icon={faGlobe} size={20} />
-        </TouchableOpacity>
-        <BottomPopup ref={popupRef} title="Preferences">
-          <ItemBottomPopup
-            icon={faHeart}
-            text="Reading Preferences"
-            onPress={() => console.log(123)}
-          />
-          <ItemBottomPopup
-            icon={faGlobe}
-            text="Content Language"
-            onPress={() => console.log(234)}
-          />
-        </BottomPopup>
-      </Heading>
-    </View>
+    <Tab.Navigator
+      sceneContainerStyle={{
+        backgroundColor: '#F1F4F9',
+      }}
+      initialRouteName="Novel"
+      tabBarPosition="top"
+      screenOptions={({route}) => ({
+        tabBarStyle: {
+          backgroundColor: '#F1F4F9',
+          marginTop: 35,
+          paddingHorizontal: 5,
+        },
+        tabBarItemStyle: {
+          width: 'auto',
+          borderColor: '#666666',
+          paddingBottom: 0,
+        },
+        tabBarLabelStyle: styles.tabBarLabelStyle,
+        tabBarActiveTintColor: '#262626',
+        tabBarIndicatorStyle: {
+          backgroundColor: 'black',
+          marginLeft: 5,
+          maxWidth: 0.5,
+        },
+      })}>
+      <Tab.Screen
+        name="Novel"
+        component={NovelScreen}
+        options={{tabBarLabel: 'Novel'}}
+      />
+      <Tab.Screen
+        name="NewNovel"
+        component={NewNovelScreen}
+        options={{tabBarLabel: 'New Novel'}}
+      />
+      <Tab.Screen
+        name="Comic"
+        component={ComicScreen}
+        options={{tabBarLabel: 'Comic'}}
+      />
+    </Tab.Navigator>
   );
 }
 
 const styles = StyleSheet.create({
-  centeredView: {},
-  languageTouch: {flex: 1, marginLeft: '5%'},
+  tabBarLabelStyle: {
+    fontSize: 12,
+    fontWeight: 600,
+    textTransform: 'capitalize',
+  },
 });
 
 export default FeaturedScreen;
