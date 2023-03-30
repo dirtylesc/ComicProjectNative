@@ -3,10 +3,10 @@
 import {View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 
-import {MainContentView} from 'Components';
-import {ProfileHeader, CustomerBox, SystemBox} from 'Components/Profile';
 import {auth} from '../../firebaseConfig';
 import {getUser} from 'helper/users';
+import {MainContentView} from 'Components';
+import {CustomerBox, ProfileHeader, SystemBox} from 'Components/Profile';
 
 function ProfileScreen({navigation}) {
   const userInfo = getUser(auth.currentUser?.uid);

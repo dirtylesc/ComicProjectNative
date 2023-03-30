@@ -58,7 +58,7 @@ function AuthScreen({navigation}) {
               <Button
                 leftIcon={
                   <Image
-                    source={require('res/images/download.png')}
+                    source={require('res/images/facebook.png')}
                     style={{
                       width: 22,
                       height: 22,

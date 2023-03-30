@@ -31,7 +31,7 @@ function MainScreen({navigation}) {
         <Tab.Navigator
           initialRouteName="Featured"
           sceneContainerStyle={{
-            backgroundColor: colors.bg_primary,
+            backgroundColor: colors.main,
           }}
           screenOptions={({route}) => ({
             tabBarIcon: ({focused}) => {
