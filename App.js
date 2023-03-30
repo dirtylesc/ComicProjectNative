@@ -13,12 +13,10 @@ import {
 } from '@fortawesome/free-regular-svg-icons';
 import styled from 'styled-components';
 
-import {
-  ExploreScreen,
-  LibraryScreen,
-  ProfileScreen,
-  FeaturedScreen,
-} from './src/Screens';
+import {colors} from 'res/colors';
+import {MainScreen} from 'Screens';
+import {AuthScreen, LoginScreen, RegisterScreen} from 'Screens/Auth';
+import {SettingScreen} from 'Screens/Profile';
 
 const Tab = createBottomTabNavigator();
 
@@ -92,7 +90,6 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontFamily: 'NunitoSans-Regular',
     fontWeight: 400,
-    backgroundColor: colors.bg_primary,
   },
 });
 
