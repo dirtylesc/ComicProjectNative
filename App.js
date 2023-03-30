@@ -7,12 +7,9 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useFonts} from 'expo-font';
 
-import {
-  ExploreScreen,
-  LibraryScreen,
-  ProfileScreen,
-  FeaturedScreen,
-} from './src/Screens';
+import {MainScreen} from 'Screens';
+import {AuthScreen, LoginScreen, RegisterScreen} from 'Screens/Auth';
+import {SettingScreen} from 'Screens/Profile';
 
 const Stack = createStackNavigator();
 
