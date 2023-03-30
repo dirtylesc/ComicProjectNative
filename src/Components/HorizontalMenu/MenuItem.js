@@ -6,9 +6,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 
-import Calendar from 'res/icons/i-calendar.svg';
 import {IconViewItem} from 'Components';
 
 function MenuItem({title, onPress, bgColor, icon, ...props}) {
@@ -37,7 +35,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 10,
     letterSpacing: 0.6,
-    fontWeight: '300',
+    fontWeight: '400',
     textTransform: 'uppercase',
     lineHeight: 20,
   },

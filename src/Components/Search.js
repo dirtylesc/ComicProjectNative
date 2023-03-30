@@ -3,7 +3,7 @@ import {useState} from 'react';
 
 import {View, TextInput, StyleSheet} from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faMagnifyingGlass, faGlobe} from '@fortawesome/free-solid-svg-icons';
+import {faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons';
 
 function Search({width, ...inputProps}) {
   const [inputSearch, setInputSearch] = useState('');

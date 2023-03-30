@@ -83,10 +83,7 @@ const BottomPopup = forwardRef(({title, children}, ref) => {
                 />
               </View>
             </Pressable>
-            <Text
-              style={{fontWeight: 'bold', fontSize: 20, paddingVertical: 10}}>
-              {title}
-            </Text>
+            <Text style={styles.title}>{title}</Text>
             {children}
           </Animated.View>
         </Animated.View>
@@ -120,6 +117,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#d9d9d9',
     paddingHorizontal: 25,
     borderRadius: 50,
+  },
+  title: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    paddingVertical: 10,
   },
 });
 

@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     letterSpacing: 0.6,
     color: colors.large,
+    textTransform: 'capitalize',
   },
   smallText: {
     paddingLeft: 8,
