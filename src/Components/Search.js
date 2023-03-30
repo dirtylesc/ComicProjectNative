@@ -9,7 +9,7 @@ function Search({width, ...inputProps}) {
   const [inputSearch, setInputSearch] = useState('');
 
   return (
-    <View style={{width: width}}>
+    <View width={width} style={{paddingRight: 25}}>
       <FontAwesomeIcon icon={faMagnifyingGlass} style={styled.icon} />
       <TextInput
         {...inputProps}
