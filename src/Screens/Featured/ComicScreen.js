@@ -1,50 +1,10 @@
-/* eslint-disable no-bitwise */
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/react-in-jsx-scope */
-import {colors} from 'res/colors';
-import {HorizontalMenu, MenuItem} from 'Components/HorizontalMenu';
 import {ItemContentView, MainContentView} from 'Components';
-import {Image, ScrollView} from 'react-native';
+import {ScrollView} from 'react-native';
 import FlatListCustom from 'Components/List/FlatListCustom';
 import {getComics, getRandomComics} from 'helper/comics';
 import {useEffect, useState} from 'react';
-
-const MenuFunc = ({navigation}) => {
-  return (
-    <HorizontalMenu type="row">
-      <MenuItem
-        title="genre"
-        icon={<Image source={require('res/icons/adjust.png')} />}
-        bgColor={colors.quaternary_lighter}
-        size={20}
-        onPress={() => {
-          navigation.navigate('Explore');
-        }}
-      />
-      <MenuItem
-        title="New"
-        icon={<Image source={require('res/icons/new.png')} />}
-        bgColor={colors.negative_lighter}
-        size={20}
-        onPress={() => {}}
-      />
-      <MenuItem
-        title="Event"
-        icon={<Image source={require('res/icons/calendar.png')} />}
-        bgColor={colors.event}
-        size={20}
-        onPress={() => {}}
-      />
-      <MenuItem
-        title="Rank"
-        icon={<Image source={require('res/icons/rank.png')} />}
-        bgColor={colors.rank}
-        size={20}
-        onPress={() => {}}
-      />
-    </HorizontalMenu>
-  );
-};
+import {FunctionBox} from 'Components/Featured/Comic';
 
 function ComicScreen({navigation}) {
   const [risingComicsData, setRisingComicsData] = useState([]);
@@ -83,7 +43,7 @@ function ComicScreen({navigation}) {
           />
         </ItemContentView>
         <ItemContentView>
-          <MenuFunc navigation={navigation} />
+          <FunctionBox navigation={navigation} />
         </ItemContentView>
         <ItemContentView>
           <FlatListCustom
@@ -98,6 +58,15 @@ function ComicScreen({navigation}) {
         <ItemContentView>
           <FlatListCustom
             title="You May Also Like"
+            data={randomComicsData}
+            onPressForRandom={() => generateRandomComics()}
+            numColumns={4}
+            listItemType="m"
+          />
+        </ItemContentView>
+        <ItemContentView>
+          <FlatListCustom
+            title="Rankings"
             data={randomComicsData}
             onPressForRandom={() => generateRandomComics()}
             numColumns={4}
