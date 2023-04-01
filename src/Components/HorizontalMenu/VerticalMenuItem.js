@@ -3,7 +3,6 @@
 import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 
-import {IconViewItem} from 'Components';
 import {colors} from 'res/colors';
 
 function VerticalMenuItem({
