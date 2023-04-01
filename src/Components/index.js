@@ -1,4 +1,5 @@
-import {View} from 'react-native';
+import {Image, Text, View} from 'react-native';
+import {colors} from 'res/colors';
 import styled from 'styled-components';
 
 export const Heading = styled(View)`
@@ -24,4 +25,26 @@ export const IconViewItem = styled(View)`
   border-radius: 15px;
   background-color: ${props => props.bgColor};
   padding: 10px;
+`;
+
+export const AvatarImage = styled(Image)`
+  height: ${props => props.height + 'px'};
+  width: ${props => (props.isHorizontal ? 60 + 'px' : 100 + '%')};
+  border-radius: 3px;
+`;
+
+export const CenteredFlatListView = styled(View)`
+  flex-direction: ${props => props.flexDirection};
+  flex-basis: ${props => 100 / props.numColumns + '%'};
+  padding: 0 8px;
+  margin-bottom: 18px;
+`;
+
+export const ListItemTitle = styled(Text)`
+  color: ${colors.large};
+  width: ${props => (props.isHorizontal ? 180 + 'px' : 100 + '%')};
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.6px;
+  padding-bottom: 5px;
 `;
