@@ -15,12 +15,12 @@ import {auth} from '../../../firebaseConfig';
 
 function ProfileHeader({mainNavigation, userInfo}) {
   const handleUserClicked = () => {
-    if (!auth.currentUser) {
+    if (!userInfo) {
       mainNavigation.navigate('Auth');
     }
   };
 
-  const renderDisplayName = () => {
+  const renderNickname = () => {
     let content = 'RandomName';
     if (userInfo.nickname) {
       content = userInfo.nickname;
@@ -29,20 +29,27 @@ function ProfileHeader({mainNavigation, userInfo}) {
     return <Text style={styles.text}>{content}</Text>;
   };
 
+  const renderAvatar = () => {
+    let content = (
+      <FontAwesomeIcon icon={faUser} size={26} style={styles.icon} />
+    );
+
+    if (userInfo.avatar) {
+      content = (
+        <Image source={{uri: userInfo.avatar}} style={styles.userAvatar} />
+      );
+    }
+
+    return content;
+  };
+
   return (
     <SafeAreaView style={styles.centeredView}>
       <TouchableWithoutFeedback onPress={handleUserClicked}>
         <View style={styles.touchView}>
-          {renderDisplayName()}
+          {renderNickname()}
           <View style={[styles.userView, styles.userAvatar]}>
-            {!auth.currentUser || !userInfo.avatar ? (
-              <FontAwesomeIcon icon={faUser} size={26} style={styles.icon} />
-            ) : (
-              <Image
-                source={{uri: userInfo.avatar}}
-                style={styles.userAvatar}
-              />
-            )}
+            {renderAvatar()}
           </View>
         </View>
       </TouchableWithoutFeedback>
