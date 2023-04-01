@@ -1,22 +1,22 @@
 /* eslint-disable react/react-in-jsx-scope */
-import {
-  faInbox,
-  faGear,
-  faCartShopping,
-  faFileCircleCheck,
-} from '@fortawesome/free-solid-svg-icons';
+import {faInbox, faGear} from '@fortawesome/free-solid-svg-icons';
 
 import {colors} from 'res/colors';
-import {HorizontalMenu, VerticalMenuItem} from 'Components/HorizontalMenu';
+
 import {ItemContentView} from 'Components';
+import {
+  HorizontalMenu,
+  MenuSwitchItem,
+  VerticalMenuItem,
+} from 'Components/HorizontalMenu';
 
 function SystemBox({navigation}) {
   return (
     <ItemContentView>
       <HorizontalMenu type="column">
-        <VerticalMenuItem
+        <MenuSwitchItem
           title="Night Mode"
-          leftIcon={faInbox}
+          icon={faInbox}
           size={24}
           onPress={() => {
             navigation.navigate('Explore');
