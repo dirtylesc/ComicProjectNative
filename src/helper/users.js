@@ -1,5 +1,4 @@
 /* eslint-disable quotes */
-import axios from 'axios';
 import {database} from '../../firebaseConfig';
 import {ref, onValue} from 'firebase/database';
 
@@ -12,11 +11,15 @@ export const getUsers = () => {
   return data;
 };
 
-export const getUser = uid => {
+export const getUser = (uid, callback) => {
   const usersRef = ref(database, `users/${uid}`);
   let data;
   onValue(usersRef, snapshot => {
     data = snapshot.val();
+
+    if (data) {
+      callback(data);
+    }
   });
-  return data;
+  return null;
 };

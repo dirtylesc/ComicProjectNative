@@ -3,6 +3,7 @@ export const colors = {
   primary: '#3b66f5',
   primary_light: '#769cff',
   primary_lighter: '#c2d0ff',
+  secondary: '#eb1551',
   tertiary: '#ff8d29',
   tertiary_light: '#ffb370',
   tertiary_lighter: '#ffddc2',
@@ -12,9 +13,9 @@ export const colors = {
   negative: '#eb1551',
   negative_light: '#fa648c',
   negative_lighter: '#ffc2d2',
-  event: '',
   border: '#d7d8e0',
   medium: 'rgba(18,18,23,0.6)',
   large: 'rgba(18,18,23,0.9)',
   bg_primary: '#dbdff9',
+  bg_grey: '#b4b7cd',
 };
