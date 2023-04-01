@@ -1,5 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
-/* eslint-disable react/no-unstable-nested-components */
 import React, {useCallback} from 'react';
 import {StyleSheet} from 'react-native';
 
@@ -7,7 +5,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useFonts} from 'expo-font';
 
-import {MainScreen} from 'Screens';
+import MainScreen from 'Screens/MainScreen';
 import {AuthScreen, LoginScreen, RegisterScreen} from 'Screens/Auth';
 import {SettingScreen} from 'Screens/Profile';
 
@@ -16,6 +14,7 @@ const Stack = createStackNavigator();
 function App() {
   const [fontsLoaded] = useFonts({
     'NunitoSans-Regular': require('Assets/Fonts/NunitoSans-Regular.ttf'),
+    'Northern-Army': require('Assets/Fonts/Northern-Army.otf'),
   });
 
   const onLayoutRootView = useCallback(async () => {
