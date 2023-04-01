@@ -5,11 +5,18 @@ import {ScrollView} from 'react-native-gesture-handler';
 
 import {auth} from '../../firebaseConfig';
 import {getUser} from 'helper/users';
+
 import {MainContentView} from 'Components';
 import {CustomerBox, ProfileHeader, SystemBox} from 'Components/Profile';
+import {useEffect, useState} from 'react';
 
 function ProfileScreen({navigation}) {
-  const userInfo = getUser(auth.currentUser?.uid);
+  const [userInfo, setUserInfo] = useState({});
+  useEffect(() => {
+    getUser(auth.currentUser.uid, res => {
+      setUserInfo(res);
+    });
+  }, []);
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>

@@ -1,13 +1,18 @@
 /* eslint-disable react/react-in-jsx-scope */
-import {ItemContentView, MainContentView} from 'Components';
-import {ScrollView} from 'react-native';
-import FlatListCustom from 'Components/List/FlatListCustom';
-import {getComics, getRandomComics} from 'helper/comics';
 import {useEffect, useState} from 'react';
-import {FunctionBox} from 'Components/Featured/Comic';
+import {ScrollView} from 'react-native';
+
+import {getComics, getRandomComics} from 'helper/comics';
+
+import {ItemContentView, MainContentView} from 'Components';
+import {
+  FunctionBox,
+  RankingsBox,
+  RisingComicsBox,
+} from 'Components/Featured/Comic';
+import FlatListCustom from 'Components/List/FlatListCustom';
 
 function ComicScreen({navigation}) {
-  const [risingComicsData, setRisingComicsData] = useState([]);
   const [newComicsData, setNewComicsData] = useState([]);
   const [randomComicsData, setRandomComicsData] = useState([]);
   useEffect(() => {
@@ -19,9 +24,6 @@ function ComicScreen({navigation}) {
       'created_at',
       true,
     );
-    getComics(6, res => {
-      setRisingComicsData(res);
-    });
     generateRandomComics();
   }, []);
 
@@ -34,14 +36,7 @@ function ComicScreen({navigation}) {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <MainContentView>
-        <ItemContentView>
-          <FlatListCustom
-            title="Rising Comics"
-            data={risingComicsData}
-            numColumns={3}
-            listItemType="l"
-          />
-        </ItemContentView>
+        <RisingComicsBox />
         <ItemContentView>
           <FunctionBox navigation={navigation} />
         </ItemContentView>
@@ -64,15 +59,7 @@ function ComicScreen({navigation}) {
             listItemType="m"
           />
         </ItemContentView>
-        <ItemContentView>
-          <FlatListCustom
-            title="Rankings"
-            data={randomComicsData}
-            onPressForRandom={() => generateRandomComics()}
-            numColumns={4}
-            listItemType="m"
-          />
-        </ItemContentView>
+        <RankingsBox />
       </MainContentView>
     </ScrollView>
   );

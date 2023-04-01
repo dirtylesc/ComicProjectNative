@@ -76,13 +76,11 @@ function AuthScreen({navigation}) {
               <Button
                 leftIcon={<Twitter width={20} height={20} />}
                 bgColor="#55acee"
-                color="#ffffff"
                 borderColor="#55acee"
               />
               <Button
                 leftIcon={<Mail width={22} height={22} />}
                 bgColor={colors.bg_grey}
-                color="#ffffff"
                 borderColor={colors.bg_grey}
                 onPress={() => navigation.navigate('Login')}
               />
