@@ -10,7 +10,7 @@ const Tab = createMaterialTopTabNavigator();
 function FeaturedScreen({navigation}) {
   return (
     <Tab.Navigator
-      initialRouteName="Novel"
+      initialRouteName="Comic"
       tabBarPosition="top"
       screenOptions={() => ({
         tabBarStyle: styles.tabBarStyle,

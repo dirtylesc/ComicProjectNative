@@ -1,7 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/react-in-jsx-scope */
-import {View} from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
+import {ScrollView, View} from 'react-native';
 
 import {auth} from '../../firebaseConfig';
 import {getUser} from 'helper/users';
