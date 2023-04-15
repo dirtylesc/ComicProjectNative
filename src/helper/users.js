@@ -23,3 +23,23 @@ export const getUser = (uid, callback) => {
   });
   return null;
 };
+
+export const getUserForReview = (uid, callback) => {
+  const usersRef = ref(database, `users/${uid}`);
+  let data;
+  onValue(usersRef, async snapshot => {
+    const tempSnapshot = snapshot.val();
+
+    data = {
+      id: snapshot.key,
+      name: tempSnapshot.name,
+      avatar: tempSnapshot.avatar,
+    };
+
+    if (data) {
+      callback(data);
+    }
+  });
+
+  return null;
+};
