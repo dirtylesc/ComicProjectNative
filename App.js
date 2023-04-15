@@ -8,6 +8,12 @@ import {useFonts} from 'expo-font';
 import MainScreen from 'Screens/MainScreen';
 import {AuthScreen, LoginScreen, RegisterScreen} from 'Screens/Auth';
 import {SettingScreen} from 'Screens/Profile';
+import {
+  ComicDetailScreen,
+  ReviewDetailsScreen,
+  ReviewScreen,
+} from 'Screens/Featured';
+import {colors} from 'res/colors';
 
 const Stack = createStackNavigator();
 
@@ -57,6 +63,33 @@ function App() {
               headerTitleAlign: 'center',
               headerStyle: {
                 borderBottomWidth: 0.5,
+              },
+            }}
+          />
+        </Stack.Group>
+        <Stack.Group>
+          <Stack.Screen component={ComicDetailScreen} name="ComicDetail" />
+          <Stack.Screen
+            component={ReviewScreen}
+            name="Review"
+            options={{
+              headerShown: true,
+              headerTitleAlign: 'center',
+              headerTitle: 'Details',
+              headerStyle: {
+                backgroundColor: colors.main,
+              },
+            }}
+          />
+          <Stack.Screen
+            component={ReviewDetailsScreen}
+            name="ReviewDetails"
+            options={{
+              headerShown: true,
+              headerTitleAlign: 'center',
+              headerTitle: 'Details',
+              headerStyle: {
+                backgroundColor: colors.main,
               },
             }}
           />
