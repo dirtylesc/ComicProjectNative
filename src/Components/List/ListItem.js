@@ -1,5 +1,5 @@
-/* eslint-disable react/self-closing-comp */
 /* eslint-disable react/react-in-jsx-scope */
+import {useEffect, useState} from 'react';
 import {
   Image,
   StyleSheet,
@@ -12,7 +12,8 @@ import styled from 'styled-components';
 import {ref, getStorage, getDownloadURL} from 'firebase/storage';
 
 import {colors} from 'res/colors';
-import {useEffect, useState} from 'react';
+import {calculateHeightImage} from 'helper/helper';
+import {AvatarImage} from 'Components';
 
 const CenteredView = styled(View)`
   flex-direction: ${props => props.flexDirection};
@@ -23,12 +24,6 @@ const CenteredView = styled(View)`
 
 const BoxView = styled(View)`
   margin-left: ${props => (props.isHorizontal ? '12px' : '0')};
-`;
-
-const AvatarImage = styled(Image)`
-  height: ${props => props.height + 'px'};
-  width: ${props => (props.isHorizontal ? 60 + 'px' : 100 + '%')};
-  border-radius: 3px;
 `;
 
 const Title = styled(Text)`
@@ -48,6 +43,7 @@ function ListItem({
   type = 'l',
   numColumns,
   isHorizontal = false,
+  onPress,
 }) {
   const [url, setUrl] = useState();
 
@@ -66,26 +62,13 @@ function ListItem({
     }
   }, [avatarUri, url]);
 
-  const calculateHeightImage = () => {
-    switch (type) {
-      case 'l':
-        return 130;
-      case 'm':
-        return 100;
-      case 's':
-        return 80;
-      default:
-        return 85;
-    }
-  };
-
   return (
-    <TouchableWithoutFeedback>
+    <TouchableWithoutFeedback onPress={onPress}>
       <CenteredView
         numColumns={numColumns}
         flexDirection={isHorizontal ? 'row' : 'column'}>
         <AvatarImage
-          height={calculateHeightImage()}
+          height={calculateHeightImage(type)}
           isHorizontal={isHorizontal}
           source={{uri: url}}
           resizeMode="cover"

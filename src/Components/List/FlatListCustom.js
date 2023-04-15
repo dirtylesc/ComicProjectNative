@@ -22,8 +22,15 @@ function FlatListCustom({
   isHorizontal = false,
   onPressForRandom,
   numColumns,
+  navigation,
   ...props
 }) {
+  const handleNavigate = itemId => {
+    navigation.navigate('ComicDetail', {
+      id: itemId,
+    });
+  };
+
   const renderFlatList = () => {
     return (
       <FlatList
@@ -43,6 +50,7 @@ function FlatListCustom({
             numColumns={numColumns}
             isHorizontal={isHorizontal}
             type={props.listItemType}
+            onPress={() => handleNavigate(item.id)}
           />
         )}
         keyExtractor={item => item.id}

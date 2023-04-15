@@ -1,15 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/react-in-jsx-scope */
-import {
-  FlatList,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faRepeat} from '@fortawesome/free-solid-svg-icons';
+import {FlatList, ScrollView, StyleSheet, View} from 'react-native';
 
 import {colors} from 'res/colors';
 
@@ -23,9 +14,16 @@ function RankedFlatList({
   isHorizontal = false,
   onPressForRandom,
   numColumns,
+  navigation,
   ...props
 }) {
   const childsData = chunkify(data, 5);
+
+  const handleNavigate = itemId => {
+    navigation.navigate('ComicDetail', {
+      id: itemId,
+    });
+  };
 
   const renderFlatList = () => {
     let i = 0;
@@ -41,7 +39,7 @@ function RankedFlatList({
             alignSelf: 'flex-start',
           }}
           data={child}
-          renderItem={({item, index}) => (
+          renderItem={({item}) => (
             <RankedListItem
               index={++i}
               title={item.name}
@@ -50,6 +48,7 @@ function RankedFlatList({
               numColumns={numColumns}
               isHorizontal={isHorizontal}
               type={props.listItemType}
+              onPress={() => handleNavigate(item.id)}
             />
           )}
           keyExtractor={item => item.id}

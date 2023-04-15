@@ -28,6 +28,7 @@ function RankedListItem({
   type = 'l',
   numColumns,
   isHorizontal = false,
+  onPress,
 }) {
   const [url, setUrl] = useState();
 
@@ -47,7 +48,7 @@ function RankedListItem({
   }, [avatarUri, url]);
 
   return (
-    <TouchableWithoutFeedback>
+    <TouchableWithoutFeedback onPress={onPress}>
       <CenteredFlatListView
         numColumns={numColumns}
         flexDirection={isHorizontal ? 'row' : 'column'}>
