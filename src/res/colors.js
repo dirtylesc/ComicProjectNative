@@ -16,6 +16,8 @@ export const colors = {
   border: '#d7d8e0',
   medium: 'rgba(18,18,23,0.6)',
   large: 'rgba(18,18,23,0.9)',
+  white: '#ffffff',
+  black: '#000',
   bg_primary: '#dbdff9',
   bg_grey: '#b4b7cd',
 };
