@@ -1,6 +1,48 @@
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable no-shadow */
 import {Image, Text, View} from 'react-native';
+import {faStar} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {colors} from 'res/colors';
 import styled from 'styled-components';
+import WebView from 'react-native-webview';
+
+export const renderRateStar = rate => {
+  var arrRate = [];
+  for (let index = 1; index <= rate; index++) {
+    arrRate[index] = index;
+  }
+  return (
+    <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 3}}>
+      {arrRate.map(rate => (
+        <FontAwesomeIcon
+          key={rate}
+          icon={faStar}
+          size={14}
+          color={colors.tertiary}
+          style={{marginRight: 3}}
+        />
+      ))}
+    </View>
+  );
+};
+
+export const renderMessages = (messages, style) => {
+  return (
+    <WebView
+      androidLayerType="software"
+      showsVerticalScrollIndicator={false}
+      originWhitelist={['*']}
+      style={style}
+      source={{
+        html:
+          '<html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>' +
+          messages,
+      }}
+    />
+  );
+};
 
 export const Heading = styled(View)`
   flex: 1;
