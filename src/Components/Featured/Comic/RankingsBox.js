@@ -1,20 +1,20 @@
 /* eslint-disable react/react-in-jsx-scope */
 import {useEffect, useState} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
 
-import {getComics} from 'helper/comics';
+import {colors} from 'res/colors';
+import {getRankedComics} from 'helper/comics';
 
 import {ItemContentView} from 'Components';
 import {RankedFlatList} from 'Components/List';
-import {StyleSheet, Text, View} from 'react-native';
-import {colors} from 'res/colors';
 
-function RankingsBox() {
-  const [rankedComicData, setRankedComicData] = useState([]);
+function RankingsBox({navigation}) {
+  const [data, setData] = useState([]);
   useEffect(() => {
-    getComics(
+    getRankedComics(
       15,
       res => {
-        setRankedComicData(res);
+        setData(res.sort((a, b) => b.avgRate - a.avgRate).splice(0, 15));
       },
       'rating',
       true,
@@ -27,7 +27,8 @@ function RankingsBox() {
         <Text style={styles.title}>Rankings</Text>
         <RankedFlatList
           smallText="Hit New Comic"
-          data={rankedComicData}
+          data={data}
+          navigation={navigation}
           isHorizontal={true}
           numColumns={3}
           listItemType="s"

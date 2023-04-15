@@ -5,7 +5,7 @@ import {getComics} from 'helper/comics';
 import {ItemContentView} from 'Components';
 import FlatListCustom from 'Components/List/FlatListCustom';
 
-function RisingComicsBox() {
+function RisingComicsBox({navigation}) {
   const [risingComicsData, setRisingComicsData] = useState([]);
   useEffect(() => {
     getComics(6, res => {
@@ -18,6 +18,7 @@ function RisingComicsBox() {
       <FlatListCustom
         title="Rising Comics"
         data={risingComicsData}
+        navigation={navigation}
         numColumns={3}
         listItemType="l"
       />
