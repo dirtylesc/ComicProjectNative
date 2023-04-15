@@ -19,7 +19,7 @@ function ComicScreen({navigation}) {
     getComics(
       9,
       res => {
-        setNewComicsData(res.reverse());
+        setNewComicsData(res);
       },
       'created_at',
       true,
@@ -36,7 +36,7 @@ function ComicScreen({navigation}) {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <MainContentView>
-        <RisingComicsBox />
+        <RisingComicsBox navigation={navigation} />
         <ItemContentView>
           <FunctionBox navigation={navigation} />
         </ItemContentView>
@@ -45,6 +45,7 @@ function ComicScreen({navigation}) {
             title="New Release"
             smallText="Hit New Comic"
             data={newComicsData}
+            navigation={navigation}
             isHorizontal={true}
             numColumns={3}
             listItemType="s"
@@ -54,12 +55,13 @@ function ComicScreen({navigation}) {
           <FlatListCustom
             title="You May Also Like"
             data={randomComicsData}
+            navigation={navigation}
             onPressForRandom={() => generateRandomComics()}
             numColumns={4}
             listItemType="m"
           />
         </ItemContentView>
-        <RankingsBox />
+        <RankingsBox navigation={navigation} />
       </MainContentView>
     </ScrollView>
   );
