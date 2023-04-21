@@ -1,6 +1,7 @@
 import {colors} from 'res/colors';
 
 const YEAR_TIME = 1000 * 3600 * 24 * 365;
+const MONTH_TIME = 1000 * 3600 * 24 * 30;
 const WEEK_TIME = 1000 * 3600 * 24 * 7;
 const DAY_TIME = 1000 * 3600 * 24;
 const HOUR_TIME = 1000 * 3600;
@@ -58,34 +59,53 @@ export const getColorRankedNumber = number => {
   }
 };
 
-export const calculateUpdatedComicTime = time => {
-  var arrDate = time.split(' ');
-  var time1 = arrDate[0].split('/');
-  var time2 = arrDate[1].split(':');
-  var date1 = new Date(
-    time1[2],
-    time1[1],
-    time1[0],
-    time2[0],
-    time2[1],
-    time2[2],
-  );
+export const getChapterNumber = number => {
+  if (number < 10) {
+    return '00' + number;
+  } else if (number < 100) {
+    return '0' + number;
+  } else {
+    return number;
+  }
+};
+
+export const calculateUpdatedComicTime = (time, type = 's') => {
+  if (!Number.isInteger(time)) {
+    var arrDate = time.split(' ');
+    var time1 = arrDate[0].split('/');
+    var time2 = arrDate[1].split(':');
+    time = new Date(
+      time1[2],
+      time1[1],
+      time1[0],
+      time2[0],
+      time2[1],
+      time2[2],
+    ).getTime();
+  }
   var date2 = Date.now();
-  var string = '';
 
-  var differenceInTime = date2 - date1.getTime();
-  string = differenceInTime + 's';
+  var differenceInTime = date2 - time;
+  return timeStampToString(differenceInTime);
+};
 
-  if (differenceInTime > YEAR_TIME) {
-    return Math.floor(differenceInTime / YEAR_TIME) + 'yr';
-  } else if (differenceInTime > WEEK_TIME) {
-    return Math.floor(differenceInTime / WEEK_TIME) + 'w';
-  } else if (differenceInTime > DAY_TIME) {
-    return Math.floor(differenceInTime / DAY_TIME) + 'd';
-  } else if (differenceInTime > HOUR_TIME) {
-    return Math.floor(differenceInTime / HOUR_TIME) + 'h';
-  } else if (differenceInTime > MINUTE_TIME) {
-    return Math.floor(differenceInTime / MINUTE_TIME) + 'm';
+export const timeStampToString = (time, type) => {
+  var string = time + 's';
+
+  if (time > YEAR_TIME) {
+    return Math.floor(time / YEAR_TIME) + (type === 's' ? 'yr' : ' year ago');
+  } else if (time > MONTH_TIME) {
+    return Math.floor(time / MONTH_TIME) + (type === 's' ? 'mo' : ' month ago');
+  } else if (time > WEEK_TIME) {
+    return Math.floor(time / WEEK_TIME) + (type === 's' ? 'w' : ' week ago');
+  } else if (time > DAY_TIME) {
+    return Math.floor(time / DAY_TIME) + (type === 's' ? 'd' : ' Day ago');
+  } else if (time > HOUR_TIME) {
+    return Math.floor(time / HOUR_TIME) + (type === 's' ? 'h' : ' Hour ago');
+  } else if (time > MINUTE_TIME) {
+    return (
+      Math.floor(time / MINUTE_TIME) + (type === 's' ? 'm' : ' Minute ago')
+    );
   }
 
   return string;
@@ -93,4 +113,14 @@ export const calculateUpdatedComicTime = time => {
 
 export const lastElement = arr => {
   return arr[arr.length - 1];
+};
+
+export const getKeyFromStorageItems = (arr, value) => {
+  for (const [i, item] of arr.entries()) {
+    if (item[0] === value) {
+      return i;
+    }
+  }
+
+  return -1;
 };

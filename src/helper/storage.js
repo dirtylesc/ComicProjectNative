@@ -8,3 +8,18 @@ export const getImage = async path => {
     return x;
   });
 };
+
+export const getMutipleImages = async (arrImages, callback) => {
+  var data = [];
+
+  const storage = getStorage();
+
+  let i = 0;
+  for (const imagePath of arrImages) {
+    const imageRef = ref(storage, imagePath);
+
+    await getDownloadURL(imageRef).then(x => {
+      callback(prev => [...prev, x]);
+    });
+  }
+};
