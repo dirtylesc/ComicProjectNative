@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/react-in-jsx-scope */
-import {faComment, faThumbsUp} from '@fortawesome/free-regular-svg-icons';
+import {faThumbsUp} from '@fortawesome/free-regular-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {Text} from '@rneui/base';
 import {renderMessages, renderRateStar} from 'Components';
@@ -15,13 +15,14 @@ function ReviewDetailsScreen({route, navigation}) {
   const {userData, comicData, reviewData} = route.params;
   const [urlImage, setUrlImage] = useState();
 
-  console.log(reviewData);
-
   useEffect(() => {
     //Get Image
     const func = async () => {
       const storage = getStorage();
-      const imageRef = ref(storage, `/review_images/${reviewData.image}`);
+      const imageRef = ref(
+        storage,
+        `/review_images/${comicData.slug}/${reviewData.image}`,
+      );
 
       await getDownloadURL(imageRef).then(x => {
         setUrlImage(x);
@@ -31,10 +32,23 @@ function ReviewDetailsScreen({route, navigation}) {
     if (urlImage === undefined && reviewData.image) {
       func();
     }
-  }, [reviewData?.image, urlImage]);
+  }, [comicData.slug, reviewData.image, urlImage]);
 
   const renderReplies = () => {
     //render from reviewData.comments
+  };
+
+  const renderReviewMessages = () => {
+    if (urlImage) {
+      return (
+        <>
+          {renderMessages(reviewData.messages, styles.messages)}
+          <Image source={{uri: urlImage}} style={styles.image} />
+        </>
+      );
+    } else {
+      return renderMessages(reviewData.messages, styles.messages);
+    }
   };
 
   return (
@@ -52,7 +66,7 @@ function ReviewDetailsScreen({route, navigation}) {
             {calculateUpdatedComicTime(reviewData.updated_at)}
           </Text>
         </View>
-        {renderMessages(reviewData.messages, styles.messages)}
+        {renderReviewMessages()}
         <View style={[styles.flex, styles.comicBox]}>
           <Image style={styles.avatarComic} source={{uri: comicData.avatar}} />
           <View style={styles.nameBox}>
@@ -60,7 +74,7 @@ function ReviewDetailsScreen({route, navigation}) {
             <Text style={styles.author}>{comicData.author}</Text>
           </View>
         </View>
-        <View style={[styles.flex, styles.justifyBetween, {marginTop: 30}]}>
+        <View style={[styles.flex, styles.justifyBetween]}>
           <Text style={[styles.funcText, {flex: 1}]}>
             Liked by {reviewData.like} people
           </Text>
@@ -97,6 +111,7 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     borderRadius: 10,
     padding: 15,
+    marginBottom: 30,
   },
   replyBox: {
     padding: 15,
@@ -149,6 +164,11 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 200,
     marginVertical: 10,
+  },
+  image: {
+    width: 80,
+    height: 80,
+    marginBottom: 30,
   },
   title: {
     fontSize: 22,

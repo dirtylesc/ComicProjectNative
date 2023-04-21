@@ -1,13 +1,19 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/react-in-jsx-scope */
 import {useRef} from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faGlobe, faHeart} from '@fortawesome/free-solid-svg-icons';
 
 import {Heading} from 'Components';
-import Search from 'Components/Search';
+import SearchBox from 'Components/SearchBox';
 import BottomPopup from 'Components/BottomPopup';
 import ItemBottomPopup from 'Components/ItemBottomPopup';
 
@@ -23,7 +29,19 @@ function FeaturedHeader({navigation}) {
   return (
     <SafeAreaView style={{marginBottom: insets.bottom}}>
       <Heading>
-        <Search width="100%" placeholder="Search for stories" />
+        <TouchableWithoutFeedback
+          onPress={() => {
+            navigation.navigate('Search');
+          }}>
+          <View style={{height: 45, width: '100%'}}>
+            <SearchBox
+              width="100%"
+              placeholder="Search for stories"
+              editable={false}
+              selectTextOnFocus={false}
+            />
+          </View>
+        </TouchableWithoutFeedback>
         <TouchableOpacity onPress={openPopup} style={styles.languageTouch}>
           <FontAwesomeIcon icon={faGlobe} size={20} />
         </TouchableOpacity>
