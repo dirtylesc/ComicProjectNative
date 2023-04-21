@@ -5,7 +5,7 @@ import {View, TextInput, StyleSheet} from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons';
 
-function Search({width, ...inputProps}) {
+function SearchBox({width, ...inputProps}) {
   const [inputSearch, setInputSearch] = useState('');
 
   return (
@@ -42,4 +42,4 @@ const styled = StyleSheet.create({
   },
 });
 
-export default Search;
+export default SearchBox;
