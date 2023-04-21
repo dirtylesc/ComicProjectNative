@@ -27,16 +27,6 @@ function FeaturedScreen({navigation}) {
         },
       })}>
       <Tab.Screen
-        name="Novel"
-        component={NovelScreen}
-        options={{tabBarLabel: 'Novel'}}
-      />
-      <Tab.Screen
-        name="NewNovel"
-        component={NewNovelScreen}
-        options={{tabBarLabel: 'New Novel'}}
-      />
-      <Tab.Screen
         name="Comic"
         component={ComicScreen}
         options={{tabBarLabel: 'Comic'}}
