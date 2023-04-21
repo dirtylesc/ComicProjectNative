@@ -12,9 +12,11 @@ import {useEffect, useState} from 'react';
 function ProfileScreen({navigation}) {
   const [userInfo, setUserInfo] = useState({});
   useEffect(() => {
-    getUser(auth.currentUser.uid, res => {
-      setUserInfo(res);
-    });
+    if (auth.currentUser?.uid) {
+      getUser(auth.currentUser.uid, res => {
+        setUserInfo(res);
+      });
+    }
   }, []);
 
   return (
