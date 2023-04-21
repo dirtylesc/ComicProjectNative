@@ -35,7 +35,7 @@ function RankedListItem({
   useEffect(() => {
     const func = async () => {
       const storage = getStorage();
-      const imageRef = ref(storage, '/comic_images/' + avatarUri);
+      const imageRef = ref(storage, `/comic_images/${avatarUri}`);
 
       await getDownloadURL(imageRef).then(x => {
         setUrl(x);
