@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 import React, {useCallback} from 'react';
 import {StyleSheet} from 'react-native';
 
@@ -5,15 +6,20 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useFonts} from 'expo-font';
 
+import {colors} from 'res/colors';
+import {HistoryScreen} from 'Screens';
 import MainScreen from 'Screens/MainScreen';
 import {AuthScreen, LoginScreen, RegisterScreen} from 'Screens/Auth';
 import {SettingScreen} from 'Screens/Profile';
 import {
+  ChapterContentsScreen,
+  ChapterScreen,
   ComicDetailScreen,
   ReviewDetailsScreen,
   ReviewScreen,
 } from 'Screens/Featured';
-import {colors} from 'res/colors';
+import SearchScreen from 'Screens/SearchScreen';
+import {SearchHeader} from 'Components/Search';
 
 const Stack = createStackNavigator();
 
@@ -69,6 +75,21 @@ function App() {
         </Stack.Group>
         <Stack.Group>
           <Stack.Screen component={ComicDetailScreen} name="ComicDetail" />
+          <Stack.Screen component={ChapterScreen} name="Chapter" />
+          <Stack.Screen
+            component={ChapterContentsScreen}
+            name="ChapterContents"
+            options={{
+              headerShown: true,
+              headerTitleAlign: 'center',
+              headerTitle: 'Contents',
+              headerStyle: {
+                backgroundColor: colors.main,
+                borderBottomColor: colors.border,
+                borderBottomWidth: 0.5,
+              },
+            }}
+          />
           <Stack.Screen
             component={ReviewScreen}
             name="Review"
@@ -78,6 +99,8 @@ function App() {
               headerTitle: 'Details',
               headerStyle: {
                 backgroundColor: colors.main,
+                borderBottomColor: colors.border,
+                borderBottomWidth: 0.5,
               },
             }}
           />
@@ -90,8 +113,36 @@ function App() {
               headerTitle: 'Details',
               headerStyle: {
                 backgroundColor: colors.main,
+                borderBottomColor: colors.border,
+                borderBottomWidth: 0.5,
               },
             }}
+          />
+        </Stack.Group>
+        <Stack.Group>
+          <Stack.Screen
+            name="History"
+            component={HistoryScreen}
+            options={{
+              headerShown: true,
+              title: 'History',
+              headerTitleAlign: 'center',
+              headerStyle: {
+                borderBottomWidth: 0.5,
+              },
+            }}
+          />
+          <Stack.Screen
+            name="Search"
+            component={SearchScreen}
+            options={({navigation}) => ({
+              headerShown: true,
+              header: () => <SearchHeader navigation={navigation} />,
+              headerStyle: {
+                borderBottomColor: colors.black,
+                borderBottomWidth: 0.5,
+              },
+            })}
           />
         </Stack.Group>
       </Stack.Navigator>
