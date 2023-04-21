@@ -47,7 +47,7 @@ function CustomerBox({navigation}) {
           size={24}
           color={colors.large}
           onPress={() => {
-            navigation.navigate('Explore');
+            navigation.navigate('History');
           }}
         />
       </HorizontalMenu>

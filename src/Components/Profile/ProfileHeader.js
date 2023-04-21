@@ -15,7 +15,7 @@ import {auth} from '../../../firebaseConfig';
 
 function ProfileHeader({mainNavigation, userInfo}) {
   const handleUserClicked = () => {
-    if (!userInfo) {
+    if (userInfo !== {}) {
       mainNavigation.navigate('Auth');
     }
   };
