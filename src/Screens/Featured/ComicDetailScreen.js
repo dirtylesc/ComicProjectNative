@@ -16,13 +16,17 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
   faAngleRight,
   faArrowLeft,
+  faBookOpenReader,
+  faCirclePlus,
+  faCloudArrowDown,
   faShare,
 } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {colors} from 'res/colors';
 import {getComic} from 'helper/comics';
-import {calculateUpdatedComicTime, lastElement} from 'helper/helper';
+import {calculateUpdatedComicTime} from 'helper/helper';
 import {ReviewItem} from 'Components/ComicDetail';
 
 const ContentItemView = styled(View)`
@@ -34,6 +38,7 @@ const ContentItemView = styled(View)`
 
 function ComicDetailScreen({route, navigation}) {
   const {id} = route.params;
+  const [currentChapter, setCurrentChapter] = useState(0);
   const [data, setData] = useState({});
   const [url, setUrl] = useState();
 
@@ -41,6 +46,21 @@ function ComicDetailScreen({route, navigation}) {
     getComic(id, res => {
       setData(res);
     });
+
+    const getCurrentChapter = async () => {
+      try {
+        const value = await AsyncStorage.getItem(`current_chapter_${id}`);
+        if (value !== null) {
+          setCurrentChapter(value);
+        }
+      } catch (e) {
+        // error reading value
+      }
+    };
+
+    if (id) {
+      getCurrentChapter();
+    }
   }, [id]);
 
   useEffect(() => {
@@ -82,11 +102,14 @@ function ComicDetailScreen({route, navigation}) {
     if (data.ratings) {
       return (
         <View style={styles.reviewsBox}>
-          {data.ratings.map(item => (
+          {data.ratings.map((item, index) => (
             <ReviewItem
-              key={item[0]}
-              comicData={data}
-              data={item[1]}
+              key={index}
+              comicData={{
+                ...data,
+                avatar: url,
+              }}
+              data={item}
               navigation={navigation}
             />
           ))}
@@ -95,90 +118,143 @@ function ComicDetailScreen({route, navigation}) {
     }
   };
 
+  const hanleReadNow = () => {
+    if (currentChapter) {
+      navigation.navigate('Chapter', {
+        comicId: id,
+        chapterId: currentChapter,
+      });
+    }
+  };
+
   return (
-    <ScrollView
-      style={styles.centeredView}
-      showsVerticalScrollIndicator={false}>
-      <ImageBackground source={{uri: url}} blurRadius={80}>
-        <View style={styles.header}>
-          <View style={styles.onBackView}>
-            <TouchableWithoutFeedback onPress={handleBack}>
-              <View>
-                <FontAwesomeIcon
-                  icon={faArrowLeft}
-                  size={24}
-                  color={colors.white}
-                />
+    <View style={styles.centeredView}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <ImageBackground source={{uri: url}} blurRadius={80}>
+          <View style={styles.header}>
+            <View style={styles.onBackView}>
+              <TouchableWithoutFeedback onPress={handleBack}>
+                <View>
+                  <FontAwesomeIcon
+                    icon={faArrowLeft}
+                    size={24}
+                    color={colors.white}
+                  />
+                </View>
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback>
+                <View>
+                  <FontAwesomeIcon
+                    icon={faShare}
+                    size={24}
+                    color={colors.white}
+                  />
+                </View>
+              </TouchableWithoutFeedback>
+            </View>
+            <View style={styles.infoBox}>
+              <Image source={{uri: url}} style={styles.avatar} />
+              <View style={{marginLeft: 20, flex: 1}}>
+                <Text style={styles.name} numberOfLines={2}>
+                  {data.name} {data.alias && '(' + data.alias + ')'}
+                </Text>
+                <Text style={styles.author} numberOfLines={1}>
+                  {data.author}
+                </Text>
+                <View style={{flexDirection: 'row'}}>{renderCategories()}</View>
               </View>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback>
-              <View>
-                <FontAwesomeIcon
-                  icon={faShare}
-                  size={24}
-                  color={colors.white}
-                />
-              </View>
-            </TouchableWithoutFeedback>
-          </View>
-          <View style={styles.infoBox}>
-            <Image source={{uri: url}} style={styles.avatar} />
-            <View style={{marginLeft: 20, flex: 1}}>
-              <Text style={styles.name} numberOfLines={2}>
-                {data.name} {data.alias && '(' + data.alias + ')'}
-              </Text>
-              <Text style={styles.author} numberOfLines={1}>
-                {data.author}
-              </Text>
-              <View style={{flexDirection: 'row'}}>{renderCategories()}</View>
             </View>
           </View>
-        </View>
-      </ImageBackground>
-      <View style={styles.contentView}>
-        <ContentItemView>
-          <Text style={styles.title}>Synopsis</Text>
-          <Text style={styles.description} numberOfLines={4}>
-            {data.description}
-          </Text>
-        </ContentItemView>
-        <TouchableWithoutFeedback>
+        </ImageBackground>
+        <View style={styles.contentView}>
+          <ContentItemView>
+            <Text style={styles.title}>Synopsis</Text>
+            <Text style={styles.description} numberOfLines={4}>
+              {data.description}
+            </Text>
+          </ContentItemView>
+          <TouchableWithoutFeedback>
+            <ContentItemView>
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  navigation.navigate('ChapterContents', {
+                    comicId: data.id,
+                  });
+                }}>
+                <View style={[styles.flexRow, styles.spaceBetween]}>
+                  <View>
+                    <Text style={styles.title}>Contents</Text>
+                    <Text style={{color: colors.medium}}>
+                      {data.chaptersCount} chapters, still updated
+                    </Text>
+                  </View>
+                  <View style={styles.flexRow}>
+                    {data.lastChapter && (
+                      <Text style={{marginRight: 5, color: colors.medium}}>
+                        {'Updated ' +
+                          calculateUpdatedComicTime(
+                            data.lastChapter.created_at,
+                          )}
+                      </Text>
+                    )}
+                    <FontAwesomeIcon
+                      icon={faAngleRight}
+                      color={colors.medium}
+                    />
+                  </View>
+                </View>
+              </TouchableWithoutFeedback>
+            </ContentItemView>
+          </TouchableWithoutFeedback>
           <ContentItemView>
             <View style={[styles.flexRow, styles.spaceBetween]}>
-              <View>
-                <Text style={styles.title}>Contents</Text>
-                <Text style={{color: colors.medium}}>
-                  {data.chapters?.length} chapters, still updated
-                </Text>
-              </View>
+              <Text style={styles.title}>Reviews</Text>
               <View style={styles.flexRow}>
-                {data.chapters && (
-                  <Text style={{marginRight: 5, color: colors.medium}}>
-                    {'Updated ' +
-                      calculateUpdatedComicTime(
-                        lastElement(data.chapters)[1].created_at,
-                      )}
-                  </Text>
-                )}
+                <Text style={{marginRight: 5, color: colors.medium}}>
+                  {data.ratings?.length} Reviews
+                </Text>
                 <FontAwesomeIcon icon={faAngleRight} color={colors.medium} />
               </View>
             </View>
+            {renderReviews()}
           </ContentItemView>
-        </TouchableWithoutFeedback>
-        <ContentItemView>
-          <View style={[styles.flexRow, styles.spaceBetween]}>
-            <Text style={styles.title}>Reviews</Text>
-            <View style={styles.flexRow}>
-              <Text style={{marginRight: 5, color: colors.medium}}>
-                {data.ratings?.length} Reviews
-              </Text>
-              <FontAwesomeIcon icon={faAngleRight} color={colors.medium} />
-            </View>
+        </View>
+      </ScrollView>
+      <View style={[styles.funcBox, styles.flexRow]}>
+        <TouchableWithoutFeedback onPress={() => {}}>
+          <View style={styles.funcBtn}>
+            <FontAwesomeIcon
+              icon={faCloudArrowDown}
+              color={colors.medium}
+              size={22}
+            />
+            <Text style={styles.funcText}>Read Now</Text>
           </View>
-          {renderReviews()}
-        </ContentItemView>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={hanleReadNow}>
+          <View style={[styles.funcBtn, styles.funcBtnCenter]}>
+            <FontAwesomeIcon
+              icon={faBookOpenReader}
+              color={colors.white}
+              size={22}
+            />
+            <Text style={[styles.funcText, styles.funcTextCenter]}>
+              Read Now
+            </Text>
+          </View>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => {}}>
+          <View style={styles.funcBtn}>
+            <FontAwesomeIcon
+              icon={faCirclePlus}
+              color={colors.medium}
+              size={22}
+            />
+            <Text style={styles.funcText}>Read Now</Text>
+          </View>
+        </TouchableWithoutFeedback>
       </View>
-    </ScrollView>
+    </View>
   );
 }
 const styles = StyleSheet.create({
@@ -248,6 +324,32 @@ const styles = StyleSheet.create({
   },
   reviewsBox: {
     marginVertical: 10,
+  },
+  funcBox: {
+    position: 'absolute',
+    bottom: -2,
+  },
+  funcBtn: {
+    flexBasis: '33.333%',
+    backgroundColor: colors.white,
+    paddingVertical: 12,
+    alignItems: 'center',
+  },
+  funcBtnCenter: {
+    backgroundColor: colors.primary,
+    color: colors.white,
+  },
+  funcText: {
+    textAlign: 'center',
+    paddingTop: 7,
+    color: colors.medium,
+    textTransform: 'uppercase',
+    fontWeight: '500',
+    fontSize: 11,
+    letterSpacing: 0.6,
+  },
+  funcTextCenter: {
+    color: colors.white,
   },
 });
 

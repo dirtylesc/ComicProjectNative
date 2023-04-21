@@ -40,7 +40,6 @@ function ReviewItem({comicData, data, navigation}) {
         );
 
         await getDownloadURL(imageRef).then(x => {
-          userData.avatar = x;
           setUrlAvatar(x);
         });
       } else {
@@ -56,7 +55,10 @@ function ReviewItem({comicData, data, navigation}) {
   const handlePress = () => {
     if (data && userData) {
       navigation.navigate('ReviewDetails', {
-        userData: userData,
+        userData: {
+          ...userData,
+          avatar: urlAvatar,
+        },
         comicData: comicData,
         reviewData: data,
       });
