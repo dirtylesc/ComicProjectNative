@@ -33,12 +33,14 @@ export const renderMessages = (messages, style) => {
     <WebView
       androidLayerType="software"
       showsVerticalScrollIndicator={false}
+      automaticallyAdjustContentInsets={false}
       originWhitelist={['*']}
       style={style}
       source={{
         html:
-          '<html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>' +
-          messages,
+          '<html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"></head><body>' +
+          messages +
+          '</body>',
       }}
     />
   );
@@ -86,7 +88,7 @@ export const ListItemTitle = styled(Text)`
   color: ${colors.large};
   width: ${props => (props.isHorizontal ? 180 + 'px' : 100 + '%')};
   font-weight: 500;
-  font-size: 14px;
+  font-size: ${props => (props.fs ? props.fs + 'px' : '14px')};
   letter-spacing: 0.6px;
   padding-bottom: 5px;
 `;
