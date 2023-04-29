@@ -21,6 +21,7 @@ import {
   FeaturedScreen,
 } from 'Screens';
 import {FeaturedHeader} from 'Components/Featured';
+import LibraryHeader from 'Components/Library/LibraryHeader';
 
 const Tab = createBottomTabNavigator();
 
@@ -59,7 +60,13 @@ function MainScreen({navigation}) {
             tabBarStyle: styles.tabBar,
           })}>
           <Tab.Group>
-            <Tab.Screen name="Library" component={LibraryScreen} />
+            <Tab.Screen
+              name="Library"
+              component={LibraryScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
             <Tab.Screen
               name="Featured"
               component={FeaturedScreen}
