@@ -1,14 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope */
 import {forwardRef, useImperativeHandle, useRef, useState} from 'react';
-import {
-  Animated,
-  Dimensions,
-  Modal,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {Animated, Modal, Pressable, StyleSheet, Text, View} from 'react-native';
 
 import {faAngleDown} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -52,7 +44,7 @@ const BottomPopup = forwardRef(({title, children}, ref) => {
 
   return (
     <Modal animationType="none" transparent visible={show}>
-      <TouchableWithoutFeedback onPress={handleClose}>
+      <TouchableWithoutFeedback>
         <Animated.View
           style={[
             styles.bgModal,
@@ -83,7 +75,7 @@ const BottomPopup = forwardRef(({title, children}, ref) => {
                 />
               </View>
             </Pressable>
-            <Text style={styles.title}>{title}</Text>
+            {title && <Text style={styles.title}>{title}</Text>}
             {children}
           </Animated.View>
         </Animated.View>
@@ -117,6 +109,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#d9d9d9',
     paddingHorizontal: 25,
     borderRadius: 50,
+    flex: 1,
   },
   title: {
     fontWeight: 'bold',
