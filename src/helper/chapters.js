@@ -27,11 +27,9 @@ export const getFirstChapter = (comicId, callback) => {
 };
 
 export const getChapter = (comicId, chapterId, callback) => {
-  let comicChaptersRef = query(
-    ref(database, `comic_chapters/${comicId}/${chapterId}`),
-  );
+  let chapterRef = query(ref(database, `chapters/${comicId}/${chapterId}`));
 
-  onValue(comicChaptersRef, snapshot => {
+  onValue(chapterRef, snapshot => {
     callback(snapshot.toJSON());
   });
 };

@@ -11,6 +11,7 @@ import {
   orderByKey,
   child,
   off,
+  equalTo,
 } from 'firebase/database';
 import {
   getMultipleRandomArr,
@@ -100,6 +101,56 @@ export const getComic = (id, callback) => {
   });
 };
 
+export const findComics = (p, limit, callback) => {
+  let data = [];
+  let comicCategoriesRef = ref(database, 'comic_categories');
+  let comicsRef = query(ref(database, 'comics'));
+
+  let i = 0;
+  onChildAdded(comicsRef, comicSnapshot => {
+    let tempComicSnapshot = comicSnapshot.toJSON();
+    if (
+      tempComicSnapshot.name.toLowerCase().includes(p.toLowerCase().trim()) ||
+      tempComicSnapshot.author.toLowerCase().includes(p.toLowerCase().trim())
+    ) {
+      let tempComicCategoriesRef = child(comicCategoriesRef, comicSnapshot.key);
+      let ratingRef = ref(database, `ratings/${comicSnapshot.key}`);
+
+      onValue(tempComicCategoriesRef, categoriesSnapshot => {
+        if (categoriesSnapshot.toJSON()) {
+          var avgRate = 0;
+
+          onValue(ratingRef, ratingSnapshot => {
+            if (ratingSnapshot.toJSON()) {
+              tempComicSnapshot.ratings = Object.values(
+                ratingSnapshot.toJSON(),
+              );
+              avgRate = calculateAvgRateComic(
+                Object.values(tempComicSnapshot.ratings),
+              );
+            }
+          });
+
+          data.push({
+            id: comicSnapshot.key,
+            name: tempComicSnapshot.name,
+            avatar: tempComicSnapshot.avatar,
+            author: tempComicSnapshot.author,
+            slug: tempComicSnapshot.slug,
+            avgRate: avgRate,
+            categories: Object.entries(categoriesSnapshot.toJSON()),
+          });
+        }
+      });
+    }
+
+    if (++i === limit) {
+      off(comicsRef, 'child_added');
+      callback([...data]);
+    }
+  });
+};
+
 export const getComicWithChapters = (comicId, chapterId, callback) => {
   let comicRef = ref(database, `comics/${comicId}`);
   let chaptersRef = ref(database, `chapters/${comicId}`);
@@ -154,40 +205,87 @@ export const getRandomComics = (limit, callback) => {
 export const getRankedComics = (limit, callback) => {
   let data = [];
   let comicCategoriesRef = ref(database, 'comic_categories');
-  let comicsRef = ref(database, 'comics');
+  let comicsRef = query(ref(database, 'comics'));
 
   let i = 0;
-  onChildAdded(comicCategoriesRef, snapshot => {
-    let tempComicsRef = child(comicsRef, snapshot.key);
-    let ratingRef = ref(database, `ratings/${snapshot.key}`);
+  onChildAdded(comicsRef, comicSnapshot => {
+    let tempComicSnapshot = comicSnapshot.toJSON();
+    let tempComicCategoriesRef = child(comicCategoriesRef, comicSnapshot.key);
+    let ratingRef = ref(database, `ratings/${comicSnapshot.key}`);
 
-    onValue(tempComicsRef, childSnapshot => {
-      const tempChildSnapshot = childSnapshot.toJSON();
-      var avgRate = 0;
+    onValue(tempComicCategoriesRef, categoriesSnapshot => {
+      if (categoriesSnapshot.toJSON()) {
+        var avgRate = 0;
 
-      onValue(ratingRef, ratingSnapshot => {
-        if (ratingSnapshot.toJSON()) {
-          tempChildSnapshot.ratings = Object.values(ratingSnapshot.toJSON());
-          avgRate = calculateAvgRateComic(
-            Object.values(tempChildSnapshot.ratings),
-          );
-        }
-      });
+        onValue(ratingRef, ratingSnapshot => {
+          if (ratingSnapshot.toJSON()) {
+            tempComicSnapshot.ratings = Object.values(ratingSnapshot.toJSON());
+            avgRate = calculateAvgRateComic(
+              Object.values(tempComicSnapshot.ratings),
+            );
+          }
+        });
 
-      data.push({
-        id: childSnapshot.key,
-        name: tempChildSnapshot.name,
-        avatar: tempChildSnapshot.avatar,
-        slug: tempChildSnapshot.slug,
-        avgRate: avgRate,
-        categories: Object.entries(snapshot.toJSON()),
-      });
-
-      off(tempComicsRef, 'value');
+        data.push({
+          id: comicSnapshot.key,
+          name: tempComicSnapshot.name,
+          avatar: tempComicSnapshot.avatar,
+          slug: tempComicSnapshot.slug,
+          avgRate: avgRate,
+          categories: Object.entries(categoriesSnapshot.toJSON()),
+        });
+      }
 
       if (++i === limit) {
+        off(comicsRef, 'child_added');
         callback(data);
       }
     });
+  });
+};
+
+export const getRankedCompletedComics = (limit, callback) => {
+  let data = [];
+  let comicCategoriesRef = ref(database, 'comic_categories');
+  let comicsRef = query(ref(database, 'comics'));
+
+  let i = 0;
+  onChildAdded(comicsRef, comicSnapshot => {
+    let tempComicSnapshot = comicSnapshot.toJSON();
+    if (tempComicSnapshot.completed_at) {
+      let tempComicCategoriesRef = child(comicCategoriesRef, comicSnapshot.key);
+      let ratingRef = ref(database, `ratings/${comicSnapshot.key}`);
+
+      onValue(tempComicCategoriesRef, categoriesSnapshot => {
+        if (categoriesSnapshot.toJSON()) {
+          var avgRate = 0;
+
+          onValue(ratingRef, ratingSnapshot => {
+            if (ratingSnapshot.toJSON()) {
+              tempComicSnapshot.ratings = Object.values(
+                ratingSnapshot.toJSON(),
+              );
+              avgRate = calculateAvgRateComic(
+                Object.values(tempComicSnapshot.ratings),
+              );
+            }
+          });
+
+          data.push({
+            id: comicSnapshot.key,
+            name: tempComicSnapshot.name,
+            avatar: tempComicSnapshot.avatar,
+            slug: tempComicSnapshot.slug,
+            avgRate: avgRate,
+            categories: Object.entries(categoriesSnapshot.toJSON()),
+          });
+        }
+      });
+    }
+
+    if (++i === limit) {
+      off(comicsRef, 'child_added');
+      callback(data);
+    }
   });
 };
