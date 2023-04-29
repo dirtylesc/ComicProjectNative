@@ -132,18 +132,7 @@ function App() {
               },
             }}
           />
-          <Stack.Screen
-            name="Search"
-            component={SearchScreen}
-            options={({navigation}) => ({
-              headerShown: true,
-              header: () => <SearchHeader navigation={navigation} />,
-              headerStyle: {
-                borderBottomColor: colors.black,
-                borderBottomWidth: 0.5,
-              },
-            })}
-          />
+          <Stack.Screen name="Search" component={SearchScreen} />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
