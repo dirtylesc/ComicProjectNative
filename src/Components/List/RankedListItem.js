@@ -3,22 +3,16 @@
 import {useEffect, useState} from 'react';
 import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
 import {ref, getStorage, getDownloadURL} from 'firebase/storage';
-import styled from 'styled-components';
 
 import {colors} from 'res/colors';
 import {calculateHeightImage, getColorRankedNumber} from 'helper/helper';
 
-import {AvatarImage, CenteredFlatListView, ListItemTitle} from 'Components';
-
-const RankedNumber = styled(Text)`
-  color: ${props => props.color};
-  font-family: 'Northern-Army';
-  letter-spacing: 1.5px;
-  padding-top: 2px;
-  width: 22px;
-  margin-left: ${props => (props.isHorizontal ? '8px' : '0')};
-  font-size: 15px;
-`;
+import {
+  AvatarImage,
+  CenteredFlatListView,
+  ListItemTitle,
+  RankedNumber,
+} from 'Components';
 
 function RankedListItem({
   index,

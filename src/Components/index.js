@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable no-shadow */
-import {Image, Text, View} from 'react-native';
+import {Image, Text, View, TouchableWithoutFeedback} from 'react-native';
 import {faStar} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {colors} from 'res/colors';
@@ -91,4 +91,15 @@ export const ListItemTitle = styled(Text)`
   font-size: ${props => (props.fs ? props.fs + 'px' : '14px')};
   letter-spacing: 0.6px;
   padding-bottom: 5px;
+`;
+
+export const RankedNumber = styled(Text)`
+  color: ${props => props.color};
+  font-family: 'Northern-Army';
+  letter-spacing: 1.5px;
+  padding-top: 2px;
+  width: 22px;
+  margin-right: ${props => (props.isHorizontal ? '8px' : '0')};
+  font-size: 15px;
+  text-align: right;
 `;

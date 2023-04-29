@@ -11,11 +11,10 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faUser} from '@fortawesome/free-regular-svg-icons';
 
 import {colors} from 'res/colors';
-import {auth} from '../../../firebaseConfig';
 
 function ProfileHeader({mainNavigation, userInfo}) {
   const handleUserClicked = () => {
-    if (userInfo !== {}) {
+    if (!userInfo) {
       mainNavigation.navigate('Auth');
     }
   };

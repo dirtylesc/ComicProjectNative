@@ -24,11 +24,13 @@ const CenteredView = styled(View)`
 
 const BoxView = styled(View)`
   margin-left: ${props => (props.isHorizontal ? '12px' : '0')};
+  flex: 1;
 `;
 
 const Title = styled(Text)`
   color: ${colors.large};
-  width: ${props => (props.isHorizontal ? 180 + 'px' : 100 + '%')};
+  width: ${props =>
+    props.isHorizontal && !props.isSearch ? 180 + 'px' : 100 + '%'};
   font-weight: 500;
   font-size: 14px;
   letter-spacing: 0.6px;
@@ -38,6 +40,7 @@ const Title = styled(Text)`
 
 function ListItem({
   title,
+  isSearch,
   avatarUri,
   text,
   type = 'l',
@@ -74,7 +77,10 @@ function ListItem({
           resizeMode="cover"
         />
         <BoxView isHorizontal={isHorizontal}>
-          <Title numberOfLines={2} isHorizontal={isHorizontal}>
+          <Title
+            numberOfLines={2}
+            isHorizontal={isHorizontal}
+            isSearch={isSearch}>
             {title}
           </Title>
           <Text style={styles.text}>{text}</Text>

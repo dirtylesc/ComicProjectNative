@@ -18,6 +18,7 @@ import ListItem from './ListItem';
 function FlatListCustom({
   title,
   smallText,
+  isSearch = false,
   data,
   isHorizontal = false,
   onPressForRandom,
@@ -38,15 +39,13 @@ function FlatListCustom({
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
         numColumns={numColumns}
-        contentContainerStyle={{
-          alignSelf: 'flex-start',
-        }}
         data={data}
         renderItem={({item}) => (
           <ListItem
             title={item.name}
+            isSearch={isSearch}
             avatarUri={item.avatar}
-            text={item.categories[0][1]}
+            text={isSearch ? item.author : item.categories[0][1]}
             numColumns={numColumns}
             isHorizontal={isHorizontal}
             type={props.listItemType}
@@ -62,7 +61,7 @@ function FlatListCustom({
   const renderScrollList = () => {
     return (
       <ScrollView
-        horizontal
+        horizontal={title && true}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}>
         {renderFlatList()}
@@ -94,7 +93,7 @@ function FlatListCustom({
 
   return (
     <View style={styles.centeredView}>
-      {renderTitle()}
+      {title && renderTitle()}
       {smallText && <Text style={styles.smallText}>{smallText}</Text>}
       {isHorizontal ? renderScrollList() : renderFlatList()}
     </View>

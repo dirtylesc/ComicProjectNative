@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/react-in-jsx-scope */
 import {useEffect, useState} from 'react';
 import {
@@ -8,7 +7,6 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import {WebView} from 'react-native-webview';
 
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faComment, faThumbsUp} from '@fortawesome/free-regular-svg-icons';
@@ -19,7 +17,7 @@ import {getUserForReview} from 'helper/users';
 import {colors} from 'res/colors';
 import {renderMessages, renderRateStar} from 'Components';
 
-function ReviewItem({comicData, data, navigation}) {
+function ReviewItem({comicData, data, bgWebView, navigation}) {
   const [urlAvatar, setUrlAvatar] = useState();
   const [userData, setUserData] = useState();
 
@@ -76,7 +74,10 @@ function ReviewItem({comicData, data, navigation}) {
             </Text>
             {renderRateStar(data.rate)}
           </View>
-          {renderMessages(data.messages, styles.webViewMessages)}
+          {renderMessages(data.messages, {
+            ...styles.webViewMessages,
+            backgroundColor: bgWebView,
+          })}
           <View style={[styles.flex, styles.justifyBetween]}>
             <Text>{calculateUpdatedComicTime(data.updated_at)}</Text>
             <View style={[styles.funcBox, styles.flex]}>
@@ -127,7 +128,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 17,
     fontWeight: '500',
-    lineHeight: 15,
+    lineHeight: 20,
   },
   messages: {
     fontSize: 17,
@@ -142,7 +143,6 @@ const styles = StyleSheet.create({
   justifyBetween: {
     justifyContent: 'space-between',
   },
-  funcBox: {},
   funcIcon: {
     paddingRight: 15,
     paddingLeft: 30,
