@@ -86,7 +86,7 @@ export const calculateUpdatedComicTime = (time, type = 's') => {
   var date2 = Date.now();
 
   var differenceInTime = date2 - time;
-  return timeStampToString(differenceInTime);
+  return timeStampToString(differenceInTime, type);
 };
 
 export const timeStampToString = (time, type) => {
@@ -95,7 +95,9 @@ export const timeStampToString = (time, type) => {
   if (time > YEAR_TIME) {
     return Math.floor(time / YEAR_TIME) + (type === 's' ? 'yr' : ' year ago');
   } else if (time > MONTH_TIME) {
-    return Math.floor(time / MONTH_TIME) + (type === 's' ? 'mo' : ' month ago');
+    return (
+      Math.floor(time / MONTH_TIME) + (type === 's' ? 'mth' : ' month ago')
+    );
   } else if (time > WEEK_TIME) {
     return Math.floor(time / WEEK_TIME) + (type === 's' ? 'w' : ' week ago');
   } else if (time > DAY_TIME) {
@@ -118,6 +120,16 @@ export const lastElement = arr => {
 export const getKeyFromStorageItems = (arr, value) => {
   for (const [i, item] of arr.entries()) {
     if (item[0] === value) {
+      return i;
+    }
+  }
+
+  return -1;
+};
+
+export const getPositionFromStorageItems = (arr, value) => {
+  for (const [i, item] of arr.entries()) {
+    if (item === value) {
       return i;
     }
   }
