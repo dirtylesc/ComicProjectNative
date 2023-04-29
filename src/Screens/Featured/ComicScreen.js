@@ -1,6 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope */
-import {useEffect, useState} from 'react';
-import {ScrollView} from 'react-native';
+import {useCallback, useEffect, useState} from 'react';
+import {ScrollView, RefreshControl} from 'react-native';
 
 import {getComics, getRandomComics} from 'helper/comics';
 
@@ -13,18 +13,29 @@ import {
 import FlatListCustom from 'Components/List/FlatListCustom';
 
 function ComicScreen({navigation}) {
+  const [refreshing, setRefreshing] = useState(true);
   const [newComicsData, setNewComicsData] = useState([]);
   const [randomComicsData, setRandomComicsData] = useState([]);
+
   useEffect(() => {
-    getComics(
-      9,
-      res => {
-        setNewComicsData(res);
-      },
-      'created_at',
-      true,
-    );
-    generateRandomComics();
+    if (refreshing) {
+      setTimeout(() => {
+        setRefreshing(false);
+      }, 2000);
+      getComics(
+        9,
+        res => {
+          setNewComicsData(res);
+        },
+        'created_at',
+        true,
+      );
+      generateRandomComics();
+    }
+  }, [refreshing]);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
   }, []);
 
   const generateRandomComics = () => {
@@ -34,9 +45,13 @@ function ComicScreen({navigation}) {
   };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
       <MainContentView>
-        <RisingComicsBox navigation={navigation} />
+        <RisingComicsBox navigation={navigation} refreshing={refreshing} />
         <ItemContentView>
           <FunctionBox navigation={navigation} />
         </ItemContentView>
@@ -61,7 +76,7 @@ function ComicScreen({navigation}) {
             listItemType="m"
           />
         </ItemContentView>
-        <RankingsBox navigation={navigation} />
+        <RankingsBox navigation={navigation} refreshing={refreshing} />
       </MainContentView>
     </ScrollView>
   );

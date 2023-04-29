@@ -127,6 +127,14 @@ function ComicDetailScreen({route, navigation}) {
     }
   };
 
+  const hanleGoToReviews = () => {
+    if (data.ratings) {
+      navigation.navigate('Review', {
+        comicData: data,
+      });
+    }
+  };
+
   return (
     <View style={styles.centeredView}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -207,15 +215,17 @@ function ComicDetailScreen({route, navigation}) {
             </ContentItemView>
           </TouchableWithoutFeedback>
           <ContentItemView>
-            <View style={[styles.flexRow, styles.spaceBetween]}>
-              <Text style={styles.title}>Reviews</Text>
-              <View style={styles.flexRow}>
-                <Text style={{marginRight: 5, color: colors.medium}}>
-                  {data.ratings?.length} Reviews
-                </Text>
-                <FontAwesomeIcon icon={faAngleRight} color={colors.medium} />
+            <TouchableWithoutFeedback onPress={hanleGoToReviews}>
+              <View style={[styles.flexRow, styles.spaceBetween]}>
+                <Text style={styles.title}>Reviews</Text>
+                <View style={styles.flexRow}>
+                  <Text style={{marginRight: 5, color: colors.medium}}>
+                    {data.ratings?.length} Reviews
+                  </Text>
+                  <FontAwesomeIcon icon={faAngleRight} color={colors.medium} />
+                </View>
               </View>
-            </View>
+            </TouchableWithoutFeedback>
             {renderReviews()}
           </ContentItemView>
         </View>
