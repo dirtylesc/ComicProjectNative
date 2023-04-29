@@ -8,18 +8,16 @@ import {getRankedComics} from 'helper/comics';
 import {ItemContentView} from 'Components';
 import {RankedFlatList} from 'Components/List';
 
-function RankingsBox({navigation}) {
+function RankingsBox({navigation, refreshing}) {
   const [data, setData] = useState([]);
+
   useEffect(() => {
-    getRankedComics(
-      15,
-      res => {
+    if (refreshing) {
+      getRankedComics(15, res => {
         setData(res.sort((a, b) => b.avgRate - a.avgRate).splice(0, 15));
-      },
-      'rating',
-      true,
-    );
-  }, []);
+      });
+    }
+  }, [refreshing]);
 
   return (
     <ItemContentView>
