@@ -80,8 +80,8 @@ export const AvatarImage = styled(Image)`
 export const CenteredFlatListView = styled(View)`
   flex-direction: ${props => props.flexDirection};
   flex-basis: ${props => 100 / props.numColumns + '%'};
-  padding: 0 8px;
-  margin-bottom: 18px;
+  padding: ${props => (props.pd ? props.pd : '0 8px')};
+  margin-bottom: ${props => (props.mb ? props.mb : '18px')};
 `;
 
 export const ListItemTitle = styled(Text)`
