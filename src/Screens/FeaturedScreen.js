@@ -7,7 +7,7 @@ import {colors} from 'res/colors';
 
 const Tab = createMaterialTopTabNavigator();
 
-function FeaturedScreen({navigation}) {
+function FeaturedScreen() {
   return (
     <Tab.Navigator
       initialRouteName="Comic"
