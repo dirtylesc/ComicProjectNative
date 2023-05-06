@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     borderTopColor: colors.border,
     borderTopWidth: 0.7,
     flexBasis: 'auto',
-    paddingHorizontal: 69,
+    width: 194.7,
     paddingVertical: 15,
   },
   btnCancel: {
@@ -142,6 +142,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: '500',
     textTransform: 'uppercase',
+    textAlign: 'center',
     letterSpacing: 0.6,
   },
   cancelText: {
