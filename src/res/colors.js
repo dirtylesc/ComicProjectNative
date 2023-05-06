@@ -15,6 +15,7 @@ export const colors = {
   negative_light: '#fa648c',
   negative_lighter: '#ffc2d2',
   border: '#d7d8e0',
+  small: 'rgba(18,18,23,0.03)',
   medium: 'rgba(18,18,23,0.6)',
   large: 'rgba(18,18,23,0.9)',
   white: '#ffffff',
