@@ -74,7 +74,13 @@ function MainScreen({navigation}) {
                 header: () => <FeaturedHeader navigation={navigation} />,
               }}
             />
-            <Tab.Screen name="Explore" component={ExploreScreen} />
+            <Tab.Screen
+              name="Explore"
+              component={ExploreScreen}
+              options={{
+                header: () => <FeaturedHeader navigation={navigation} />,
+              }}
+            />
             <Tab.Screen
               name="Profile"
               component={ProfileScreen}
