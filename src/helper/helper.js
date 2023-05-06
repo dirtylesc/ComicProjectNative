@@ -90,7 +90,7 @@ export const calculateUpdatedComicTime = (time, type = 's') => {
 };
 
 export const timeStampToString = (time, type) => {
-  var string = time + 's';
+  var string = time / 1000 + 's';
 
   if (time > YEAR_TIME) {
     return Math.floor(time / YEAR_TIME) + (type === 's' ? 'yr' : ' year ago');
@@ -119,7 +119,7 @@ export const lastElement = arr => {
 
 export const getKeyFromStorageItems = (arr, value) => {
   for (const [i, item] of arr.entries()) {
-    if (item[0] === value) {
+    if (item[0].toString() === value) {
       return i;
     }
   }
@@ -135,4 +135,19 @@ export const getPositionFromStorageItems = (arr, value) => {
   }
 
   return -1;
+};
+
+export const sortAlphaBArr = (arr, key) => {
+  return arr.sort((a, b) => a[key].localeCompare(b[key]));
+};
+
+export const getCurrentTimestamps = () => {
+  const dt = new Date();
+  const padL = (nr, chr = '0') => `${nr}`.padStart(2, chr);
+
+  return `${padL(dt.getDate())}/${padL(
+    dt.getMonth() + 1,
+  )}/${dt.getFullYear()} ${padL(dt.getHours())}:${padL(dt.getMinutes())}:${padL(
+    dt.getSeconds(),
+  )}`;
 };
