@@ -6,8 +6,6 @@ import {
   StyleSheet,
   Image,
 } from 'react-native';
-import {colors} from 'res/colors';
-import styled from 'styled-components';
 
 function ItemRadioPopup({title, onPress, active = false}) {
   return (

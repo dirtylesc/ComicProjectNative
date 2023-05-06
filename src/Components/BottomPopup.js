@@ -44,7 +44,7 @@ const BottomPopup = forwardRef(({title, children}, ref) => {
 
   return (
     <Modal animationType="none" transparent visible={show}>
-      <TouchableWithoutFeedback>
+      <TouchableWithoutFeedback onPress={handleClose}>
         <Animated.View
           style={[
             styles.bgModal,
@@ -54,32 +54,28 @@ const BottomPopup = forwardRef(({title, children}, ref) => {
                 outputRange: [1, 0],
               }),
             },
-          ]}>
-          <Animated.View
-            style={[
-              styles.modalView,
-              {
-                translateY: fadeAnim,
-                opacity: fadeAnim.interpolate({
-                  inputRange: [0, 100],
-                  outputRange: [1, 0],
-                }),
-              },
-            ]}>
-            <Pressable style={styles.closeModalBtn} onPress={handleClose}>
-              <View style={styles.closeModalView}>
-                <FontAwesomeIcon
-                  icon={faAngleDown}
-                  size={24}
-                  color={'#666666'}
-                />
-              </View>
-            </Pressable>
-            {title && <Text style={styles.title}>{title}</Text>}
-            {children}
-          </Animated.View>
-        </Animated.View>
+          ]}
+        />
       </TouchableWithoutFeedback>
+      <Animated.View
+        style={[
+          styles.modalView,
+          {
+            translateY: fadeAnim,
+            opacity: fadeAnim.interpolate({
+              inputRange: [0, 100],
+              outputRange: [1, 0],
+            }),
+          },
+        ]}>
+        <Pressable style={styles.closeModalBtn} onPress={handleClose}>
+          <View style={styles.closeModalView}>
+            <FontAwesomeIcon icon={faAngleDown} size={24} color={'#666666'} />
+          </View>
+        </Pressable>
+        {title && <Text style={styles.title}>{title}</Text>}
+        {children}
+      </Animated.View>
     </Modal>
   );
 });
@@ -103,6 +99,7 @@ const styles = StyleSheet.create({
   },
   closeModalBtn: {
     alignItems: 'center',
+    marginBottom: 10,
   },
   closeModalView: {
     alignItems: 'center',
@@ -114,7 +111,7 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: 'bold',
     fontSize: 20,
-    paddingVertical: 10,
+    paddingBottom: 10,
   },
 });
 
