@@ -9,7 +9,16 @@ import {
 
 import {IconViewItem} from 'Components';
 
-function MenuItem({title, onPress, bgColor, icon, ...props}) {
+function MenuItem({
+  title,
+  fs = 12,
+  onPress,
+  type = 'column',
+  textTransform = 'uppercase',
+  bgColor,
+  icon,
+  style,
+}) {
   const renderIcon = () => {
     if (icon) {
       return <IconViewItem bgColor={bgColor}>{icon}</IconViewItem>;
@@ -18,9 +27,19 @@ function MenuItem({title, onPress, bgColor, icon, ...props}) {
 
   return (
     <TouchableWithoutFeedback onPress={onPress}>
-      <View style={styles.centeredView}>
+      <View style={[styles.centeredView, style, {flexDirection: type}]}>
         {renderIcon()}
-        <Text style={styles.text}>{title}</Text>
+        <Text
+          numberOfLines={2}
+          style={[
+            styles.text,
+            {
+              textTransform: textTransform,
+              fontSize: fs,
+            },
+          ]}>
+          {title}
+        </Text>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -28,16 +47,13 @@ function MenuItem({title, onPress, bgColor, icon, ...props}) {
 
 const styles = StyleSheet.create({
   centeredView: {
-    flex: 1,
     alignItems: 'center',
-    marginHorizontal: 20,
   },
   text: {
-    fontSize: 10,
     letterSpacing: 0.6,
     fontWeight: '400',
-    textTransform: 'uppercase',
-    lineHeight: 20,
+    lineHeight: 24,
+    flexShrink: 1,
   },
 });
 
