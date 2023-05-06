@@ -17,6 +17,8 @@ import {getChapter} from 'helper/chapters';
 import {getMutipleImages} from 'helper/storage';
 import {colors} from 'res/colors';
 import {checkHasKey, getKeyFromStorageItems} from 'helper/helper';
+import {updateComicFromLibrary} from 'helper/libraries';
+import {auth} from '../../../firebaseConfig';
 
 const windowWidth = Dimensions.get('window').width;
 function ChapterScreen({route, navigation}) {
@@ -36,21 +38,35 @@ function ChapterScreen({route, navigation}) {
         }
         items = JSON.parse(items);
 
-        const position = getKeyFromStorageItems(items, comicId);
-        const item = [comicId, chapterId, new Date().getTime()];
+        const position = getKeyFromStorageItems(items, comicId.toString());
+        const item = [
+          comicId.toString(),
+          chapterId.toString(),
+          new Date().getTime(),
+        ];
+
         if (position >= 0) {
+          item.push();
           items[position] = item;
         } else {
           items.push(item);
         }
         await AsyncStorage.setItem('chapters', JSON.stringify(items));
-        console.log(await AsyncStorage.getItem(key));
       } catch (e) {
         // saving error
       }
     };
+
+    const storeToLibrary = () => {
+      updateComicFromLibrary(auth.currentUser.uid, comicId, chapterId);
+    };
+
     if (comicId && chapterId) {
       storeData('chapters');
+    }
+
+    if (auth.currentUser?.uid) {
+      storeToLibrary();
     }
   }, [comicId, chapterId]);
 

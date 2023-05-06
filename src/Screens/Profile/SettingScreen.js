@@ -1,9 +1,11 @@
 /* eslint-disable react/react-in-jsx-scope */
-import {faAngleRight} from '@fortawesome/free-solid-svg-icons';
-import {HorizontalMenu, VerticalMenuItem} from 'Components/HorizontalMenu';
-import {auth} from '../../../firebaseConfig';
 import {StyleSheet} from 'react-native';
+
+import {faAngleRight} from '@fortawesome/free-solid-svg-icons';
+
+import {auth} from '../../../firebaseConfig';
 import {colors} from 'res/colors';
+import {HorizontalMenu, VerticalMenuItem} from 'Components/HorizontalMenu';
 
 function SettingScreen({navigation}) {
   const handleSignOut = () => {

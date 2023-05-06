@@ -28,6 +28,8 @@ import {colors} from 'res/colors';
 import {getComic} from 'helper/comics';
 import {calculateUpdatedComicTime} from 'helper/helper';
 import {ReviewItem} from 'Components/ComicDetail';
+import {addComicToLibrary} from 'helper/libraries';
+import {auth} from '../../../firebaseConfig';
 
 const ContentItemView = styled(View)`
   padding-top: 15px;
@@ -83,19 +85,26 @@ function ComicDetailScreen({route, navigation}) {
     navigation.goBack();
   };
 
+  const handleAddToLibrary = () => {
+    addComicToLibrary(auth.currentUser?.uid, id, currentChapter);
+  };
+
   const renderCategories = () => {
-    return data.categories?.map((item, index) => (
-      <TouchableWithoutFeedback
-        key={index}
-        onPress={() => {
-          navigation.navigate('Explore');
-        }}>
-        <Text style={styles.category}>
-          {item}
-          {index === data.categories.length - 1 ? '' : ' • '}
-        </Text>
-      </TouchableWithoutFeedback>
-    ));
+    return data.categories?.map(
+      (item, index) =>
+        index < 3 && (
+          <TouchableWithoutFeedback
+            key={index}
+            onPress={() => {
+              navigation.navigate('Explore');
+            }}>
+            <Text style={styles.category}>
+              {item}
+              {index === data.categories.length - 1 ? '' : ' • '}
+            </Text>
+          </TouchableWithoutFeedback>
+        ),
+    );
   };
 
   const renderReviews = () => {
@@ -253,14 +262,14 @@ function ComicDetailScreen({route, navigation}) {
             </Text>
           </View>
         </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => {}}>
+        <TouchableWithoutFeedback onPress={handleAddToLibrary}>
           <View style={styles.funcBtn}>
             <FontAwesomeIcon
               icon={faCirclePlus}
               color={colors.medium}
               size={22}
             />
-            <Text style={styles.funcText}>Read Now</Text>
+            <Text style={styles.funcText}>Add To</Text>
           </View>
         </TouchableWithoutFeedback>
       </View>
