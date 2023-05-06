@@ -14,7 +14,7 @@ import {colors} from 'res/colors';
 
 function ProfileHeader({mainNavigation, userInfo}) {
   const handleUserClicked = () => {
-    if (!userInfo) {
+    if (!userInfo.name) {
       mainNavigation.navigate('Auth');
     }
   };
